@@ -1,7 +1,7 @@
 import React from "react";
-import "./../about_me/aboutMe.css";
-import BackgroundImage from "./../../assets/images/background-1.png";
-import ImageBackground from "./../../assets/images/15.png";
+import "./../../about_me/aboutMe.css";
+import BackgroundImage from "./../../../assets/images/background-1.png";
+import ImageBackground from "./../../../assets/images/15.png";
 
 const Goal = () => {
   return (
@@ -24,7 +24,7 @@ const Goal = () => {
           </div>
 
           <div className="card-item2">
-            <div className="leftSide">
+            <div className="leftSide2">
               <div className="imageWrapper">
                 <div className="card-main" style={{ height: "auto" }}>
                   <div className="card-image">
@@ -33,7 +33,7 @@ const Goal = () => {
                 </div>
               </div>
             </div>
-            <div className="rightSide flexCenter">
+            <div className="rightSide2 flexCenter">
               <div className="card-main2">
                 <div
                   className="headerHome"

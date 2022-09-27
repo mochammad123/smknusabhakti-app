@@ -1,5 +1,5 @@
 import React from "react";
-import Goal from "../goals/Goal";
+import Goal from "../about_me/goals/Goal";
 
 const LandingGoal = () => {
   return (

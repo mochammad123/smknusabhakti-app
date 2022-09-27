@@ -1,7 +1,7 @@
 import React from "react";
-import "./../about_me/aboutMe.css";
-import BackgroundImage from "./../../assets/images/background-1.png";
-import ImageBackground from "./../../assets/images/15.png";
+import "./../../about_me/aboutMe.css";
+import BackgroundImage from "./../../../assets/images/background-1.png";
+import ImageBackground from "./../../../assets/images/15.png";
 
 const Background = () => {
   return (

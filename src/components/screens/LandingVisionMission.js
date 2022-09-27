@@ -1,5 +1,5 @@
 import React from "react";
-import VisionMission from "../vision_mission/VisionMission";
+import VisionMission from "../about_me/vision_mission/VisionMission";
 
 const LandingVisionMission = () => {
   return (
