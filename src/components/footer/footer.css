@@ -68,12 +68,11 @@ footer .social-icon {
     margin: 0;
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 960px) {
     .innerWrapper {
         flex-direction: column;
         flex: 1 1 0;
     }
-
     .styleParagraph {
         margin: 20px 0;
     }

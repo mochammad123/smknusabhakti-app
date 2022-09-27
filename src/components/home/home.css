@@ -10,27 +10,10 @@
     min-height: 400px;
 }
 
-.leftSide {
-    width: 50%;
-    height: 100%;
-}
-
 .headerHome {
     max-width: 470px;
     padding: 15px 0 50px 0;
     line-height: 1.5rem;
-}
-
-.rightSide {
-    width: 50%;
-    height: 100%;
-}
-
-.imageWrapper {
-    display: flex;
-    justify-content: flex-end;
-    position: relative;
-    z-index: 9;
 }
 
 img {
@@ -313,28 +296,27 @@ iframe {
     .wrapper {
         flex-direction: column;
     }
-    .leftSide {
-        width: 100%;
-        order: 2;
-        margin: 50px 0;
-        text-align: center;
+    .wrapper2 {
+        flex-direction: column;
+    }
+    .container2 {
+        padding: 0px 30px !important;
     }
     .headerHome {
         padding: 15px 0 50px 0;
         text-align: center;
         max-width: 100%;
     }
-    .rightSide {
-        width: 100%;
-        order: 1;
-        margin-top: 30px;
-    }
-    .imageWrapper {
-        width: 100%;
-        justify-content: center;
-    }
+
     .quoteWrapper {
-        left: 20px;
+        display: flex;
+        justify-content: center !important;
+        max-width: 100% !important;
+        max-height: 100%;
+        bottom: -50px;
+    }
+    .quotesWrapper {
+        display: none;
     }
     .dotsWrapper {
         right: 100px;
@@ -342,14 +324,42 @@ iframe {
     .greyDiv {
         display: none;
     }
-  }
-  
-  @media only screen and (max-width: 560px) {
-    .leftSide {
-        margin: 80px 0 50px 0;
+    .fontRecovery {
+        text-align: center;
+    }
+    .card {
+        margin: 0px !important;
+    }
+
+    iframe {
+        height: 300px;
+    }
+    .container .flexCenter {
+        flex-direction: column;
+    }
+    .card-major{
+        width: 100% !important;
+        margin: 50px 0px;
+    }
+    .card-grid {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 50px;
+    }
+    .quotesText {
+        padding: 0px 0px;
+    }
+    .wrapper2 .flexCenter {
+        flex-direction: row;
     }
     img {
-        width: 80%;
+        width: 90%;
+        height: auto;
+    }
+  }
+  
+@media only screen and (max-width: 350px) {
+    img {
+        width: 100%;
         height: auto;
     }
     .quoteWrapper {
@@ -358,4 +368,7 @@ iframe {
     .dotsWrapper {
         display: none;
     }
-  }
+    .card-major .card-content .card-details {
+        padding: 25px;
+    }
+}

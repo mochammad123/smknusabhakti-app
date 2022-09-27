@@ -12,7 +12,28 @@
   background-color: #F5F5F5;
   padding: 0px 96px 60px 96px;
 }
-
+.leftSide {
+  width: 50%;
+  height: 100%;
+}
+.rightSide {
+  width: 50%;
+  height: 100%;
+}
+.leftSide2 {
+  width: 50%;
+  height: 100%;
+}
+.rightSide2 {
+  width: 50%;
+  height: 100%;
+}
+.imageWrapper {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 9;
+}
 .sec__one {
     position: relative;
     width: 100%;
@@ -160,4 +181,40 @@
   .font60 {
     font-size: 2.8rem;
   }
+}
+
+@media only screen and (max-width: 960px) {
+  .leftSide {
+      width: 100%;
+      order: 2;
+      margin: 50px 0;
+      text-align: center;
+  }
+  .rightSide {
+      width: 100%;
+      order: 1;
+      margin-top: 30px;
+  }
+  .leftSide2 {
+        width: 100%;
+        order: 1;
+        margin: 50px 0px 0px 0px;
+        text-align: center;
+  }
+  .rightSide2 {
+        width: 100%;
+        order: 2 !important;
+        margin-top: 0px;
+  }
+  .imageWrapper {
+    width: 100%;
+    justify-content: center;
+}
+}
+
+@media only screen and (max-width: 350px) {
+  .leftSide {
+      margin: 80px 0 50px 0;
+  }
+
 }
