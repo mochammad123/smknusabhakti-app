@@ -1,5 +1,5 @@
 import React from "react";
-import BackgroundImage from "./../../../assets/images/background-1.png";
+import Header from "../../templates/Header";
 import "./../../major/major.css";
 
 const Chemical = () => {
@@ -7,20 +7,7 @@ const Chemical = () => {
     <>
       <div className="container wrapper2 flexSpaceCenter">
         <div className="row">
-          <div className="card-item">
-            <div className="card-main">
-              <div className="card-image">
-                <img src={BackgroundImage} alt="" className="card-img" />
-              </div>
-            </div>
-            <div className="flexCenter">
-              <div className="card-body2 flexCenter">
-                <div className="card-title">
-                  <h1>Analisis Kimia</h1>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Header title="Analisis Kimia" />
 
           <div className="card-item-major">
             <div className="flexCenter">
