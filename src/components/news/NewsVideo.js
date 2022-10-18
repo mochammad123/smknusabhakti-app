@@ -5,13 +5,13 @@ import newsData from "./../data/newsvideo.json";
 import { Grid } from "@mui/material";
 import VideoPlay from "../templates/VideoPlay";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const NewsVideo = () => {
   const [news, setNews] = useState(newsData);
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <div className="container wrapper2 flexSpaceCenter">
         <div className="row">
           <Header title="Berita Video" />

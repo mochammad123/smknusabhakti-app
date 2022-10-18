@@ -7,14 +7,14 @@ import CardNews from "../templates/CardNews";
 import { Grid } from "@mui/material";
 import HeaderCardNews from "../templates/HeaderCardNews";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const News = () => {
   const [news, setNews] = useState(newsData);
   const [newsHeader, setNewsHeader] = useState(newsHeaderData);
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <div className="container wrapper2 flexSpaceCenter">
         <div className="row">
           <Header title="Berita" />

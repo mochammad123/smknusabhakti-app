@@ -1,12 +1,12 @@
 import React from "react";
 import Chemical from "../major/chemical/Chemical";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const LandingChemical = () => {
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <Chemical />
       <Footer />
     </>

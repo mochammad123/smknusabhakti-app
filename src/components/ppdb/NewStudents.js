@@ -4,12 +4,12 @@ import ImageBackground from "./../../assets/images/17.png";
 import Header from "../templates/Header";
 import { Button } from "@mui/material";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const NewStudents = () => {
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <div className="container wrapper2 flexSpaceCenter">
         <div className="row">
           <Header title="PPDB" />

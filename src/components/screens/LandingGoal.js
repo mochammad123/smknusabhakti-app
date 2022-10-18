@@ -1,12 +1,12 @@
 import React from "react";
 import Goal from "../about_me/goals/Goal";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const LandingGoal = () => {
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <Goal />
       <Footer />
     </>

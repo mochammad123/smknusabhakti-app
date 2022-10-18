@@ -1,12 +1,12 @@
 import React from "react";
 import VisionMission from "../about_me/vision_mission/VisionMission";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const LandingVisionMission = () => {
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <VisionMission />
       <Footer />
     </>

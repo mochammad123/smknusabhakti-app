@@ -1,12 +1,12 @@
 import React from "react";
 import Home from "../home/Home";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const LandingHome = () => {
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <Home />
       <Footer />
     </>

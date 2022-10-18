@@ -1,12 +1,12 @@
 import React from "react";
 import Nurse from "../major/nurse/Nurse";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const LandingNurse = () => {
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <Nurse />
       <Footer />
     </>

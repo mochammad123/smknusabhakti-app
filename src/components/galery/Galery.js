@@ -5,13 +5,13 @@ import newsData from "../data/galery.json";
 import { Grid } from "@mui/material";
 import CardGalery from "../templates/CardGalery";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const Galery = () => {
   const [news, setNews] = useState(newsData);
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <div className="container wrapper2 flexSpaceCenter">
         <div className="row">
           <Header title="Galeri" />

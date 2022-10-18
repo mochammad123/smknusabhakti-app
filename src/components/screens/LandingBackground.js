@@ -1,12 +1,12 @@
 import React from "react";
 import Background from "../about_me/background/Background";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const LandingBackground = () => {
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <Background />
       <Footer />
     </>

@@ -1,12 +1,12 @@
 import React from "react";
 import Pharmacy from "../major/pharmacy/Pharmacy";
 import Footer from "../footer/Footer";
-import NavbarMenu from "../nav/NavbarMenu";
+import Navbar from "../navbar/Navbar";
 
 const LandingPharmacy = () => {
   return (
     <>
-      <NavbarMenu />
+      <Navbar />
       <Pharmacy />
       <Footer />
     </>
