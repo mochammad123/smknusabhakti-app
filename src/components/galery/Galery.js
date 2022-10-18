@@ -18,7 +18,7 @@ const Galery = () => {
 
           <Grid container mt={4} direction="row" spacing={2}>
             {news.map((newsD, index) => (
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4}>
                 <CardGalery key={index} data={newsD} />
               </Grid>
             ))}
