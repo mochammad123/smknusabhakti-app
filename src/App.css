@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Khula:wght@400;600;800&display=swap');
+.container {
+  width: 100%;
+  max-width: 1220px;
+	margin: 0 auto;
+  padding: 0px 30px;
+}
+
+.container2 {
+  width: 100%;
+	margin: 0 auto;
+  background-color: #F5F5F5;
+  padding: 0px 96px 60px 96px;
+}
+.leftSide {
+  width: 50%;
+  height: 100%;
+}
+.rightSide {
+  width: 50%;
+  height: 100%;
+}
+.leftSide2 {
+  width: 50%;
+  height: 100%;
+}
+.rightSide2 {
+  width: 50%;
+  height: 100%;
+}
+.imageWrapper {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 9;
+}
+.sec__one {
+    position: relative;
+    width: 100%;
+    display: flex;
+    padding: 60px 0;
+    flex-direction: column;
+}
+.sec__one h1{
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  color: #07a8ff;
+  font-family: 'Inter', sans-serif;
+}
+.navBar .logo img {
+  float: left;
+  max-height: 120px;
+}
+
+.navBar .col-md-3 {
+  z-index: 7;
+}
+
+/* FLEX */
+
+.flexSpaceCenter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* FONT WEIGHT */
+.semiBold {
+  font-weight: 600 !important;
+}
+
+.extraBold {
+  font-weight: 800 !important;
+}
+
+/* FONT SIZE */
+.font13 {
+  font-size: 0.813rem;
+}
+
+.font15 {
+  font-size: 0.813rem;
+}
+
+.font18 {
+  font-size: 0.9rem;
+}
+
+.fontRandom {
+  font-size: 1.2rem;
+}
+
+.font50 {
+  font-size: 2rem;
+}
+
+.font60 {
+  font-size: 3.75rem;
+  line-height: 4.5rem;
+}
+/* BORDER RADIUS */
+.radius8 {
+  border-radius: 1rem;
+}
+
+/* COLOR */
+.whiteColor {
+  color: #fff;
+}
+.orangeColor {
+  color: #F2B300;
+}
+
+/* BACKGROUND */
+.darkBg {
+  background-color: #0B093B;
+}
+
+.whiteBg {
+  background-color: #fff;
+}
+
+.lightBg {
+  background-color: #F5F5F5;
+}
+
+/* TEXT */
+.textRight {
+  text-align: right;
+}
+
+.title-name h1 {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+@media only screen and (max-width: 859px) {
+  .container {
+    padding: 0 15px;
+  }
+}
+
+@media only screen and (max-width: 859px) {
+  .font11 {
+    font-size: 0.688rem;
+  }
+  .font12 {
+    font-size: 0.688rem;
+  }
+  .font13 {
+    font-size: 0.75rem;
+  }
+  .font14 {
+    font-size: 0.813rem;
+  }
+  .font15 {
+    font-size: 0.813rem;
+  }
+  .font18 {
+    font-size: 0.938rem;
+  }
+  .font20 {
+    font-size: 1.125rem;
+  }
+  .font25 {
+    font-size: 1.25rem;
+  }
+  .font30 {
+    font-size: 1.5rem;
+  }
+  .font40 {
+    font-size: 1.875rem;
+  }
+  .font60 {
+    font-size: 2.8rem;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .leftSide {
+      width: 100%;
+      order: 2;
+      margin: 50px 0;
+      text-align: center;
+  }
+  .rightSide {
+      width: 100%;
+      order: 1;
+      margin-top: 30px;
+  }
+  .leftSide2 {
+        width: 100%;
+        order: 1;
+        margin: 50px 0px 0px 0px;
+        text-align: center;
+  }
+  .rightSide2 {
+        width: 100%;
+        order: 2 !important;
+        margin-top: 0px;
+  }
+  .imageWrapper {
+    width: 100%;
+    justify-content: center;
+}
+}
+
+@media only screen and (max-width: 350px) {
+  .leftSide {
+      margin: 80px 0 50px 0;
+  }
+
+}

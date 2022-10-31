@@ -1,0 +1,79 @@
+.wrapperFooter {
+    width: 100%;
+}
+
+.wrapperFooterBg {
+    background-color: #1D2D50;
+}
+
+.innerWrapper {
+    padding: 20px 0;
+}
+
+.innerWrapperFooter {
+    padding: 30px 0px;
+}
+
+footer {
+    padding: 120px 0;
+    padding-bottom: 0px;
+}
+
+footer .section-title {
+    padding-bottom: 10px;
+}
+
+footer h2 {
+    font-size: 20px;
+}
+
+footer a, footer p {
+    color: #d9d9d9
+}
+
+footer strong {
+    color: #d9d9d9
+}
+
+footer address p {
+    margin-bottom: 0;
+}
+
+footer .social-icon {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.footer-info {
+    cursor: pointer;
+    margin: 10px;
+    flex: 25%;
+}
+
+.footer-info:hover {
+    border: 1px solid #ff5900;
+    border-radius: 5px;
+    background-color: #ff5900;
+}
+
+.footer-info-border {
+    margin: 10px 40px;
+}
+
+.section-title {
+    padding-bottom: 10px;
+}
+
+.section-title h2 {
+    margin: 0;
+}
+
+@media only screen and (max-width: 960px) {
+    .innerWrapper {
+        flex-direction: column;
+        flex: 1 1 0;
+    }
+    .styleParagraph {
+        margin: 20px 0;
+    }
+}

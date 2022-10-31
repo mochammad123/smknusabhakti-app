@@ -1,0 +1,202 @@
+.header__middle {
+    display: flex;
+    width: 100%;
+    float: left;
+    position: fixed;
+    padding: 0px;
+    margin: 0px;
+    z-index: 999;
+}
+
+.header__middle__logo{
+  width: 30%;
+  display: block;
+  float: left;
+}
+
+.header__middle__logo__name {
+padding: 0px !important;
+margin:  -34px 0px 0px 50px !important;
+display: block;
+font-size: 25px;
+font-weight: 700;
+}
+
+.header__middle__menus {
+  width: 70%;
+  display: block;
+  float: right;
+}
+
+.header__middle__menus span.text {
+  position: absolute;
+  bottom: 10px;
+  font-size: 14px;
+  color: #ff1800;
+}
+
+ul.main-menu {
+  display: flex;
+  list-style: none;
+  margin: 0px auto 0;
+  padding: 0;
+  float: right;
+  z-index: 7;
+}
+ul.main-menu>li.menu-item:first-child {
+  padding-left: 0;
+  margin-left: 0;
+}
+.menu-item {
+  line-height: 23px;
+}
+li {
+  list-style-type: none;
+}
+.menu-item a {
+  font-size: 16px;
+  font-weight: 600;
+  position: relative;
+  display: block;
+  margin: 0px 17px 15px 17px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-item .sub__menus  a {
+  padding: 7px 0 0px 0;
+  margin: 7px 10px;
+}
+.menu-item:hover > a{
+  color: #ff5900 !important;
+  border-bottom: 1px solid #ff5900;
+}
+.menu-item .sub__menus li:hover a{
+  border-radius: 15px;
+  color: #ff5800;
+}
+
+.header__middle__logo img{
+  max-width: 207px;
+}
+
+.header__middle__logo > a > h1 {
+  color: #07a8ff;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-top: 33px;
+}
+
+.sub__menus__arrows{
+  display: inline-flex;
+}
+.sub__menus__arrows svg, .sub__menus__arrows__full svg{
+  display: inline-flex;
+  padding-top: 0px;
+  top: 2px;
+  margin-left: 2px;
+}
+.sub__menus {
+  position: absolute;
+  display: none;
+  background: white;
+  border: 1px solid lavender;
+  border-radius: 10px;
+  width: 170px;
+  z-index: 1000;
+  margin-top: 38px;
+  box-shadow: 0 10px 12px rgb(22 33 39 / 25%);
+}
+
+.sub__sub__menu {
+  text-align: center;
+  font-size: 15px !important;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+.sub__sub__menu:hover {
+  color: white !important;
+  background-color: #ff5900;
+}
+
+.animate {
+    transition: 0.4s ease;
+}
+
+.is-active {
+    color: #ff5800!important;
+    border-bottom: 1px solid #ff5800;
+}
+
+.is-active-sub-menu {
+  color: #ff5800 !important;
+  text-align: center;
+  border-radius: 15px;
+  border: 1px solid #ff5800;
+  background-color: #fff;
+}
+
+.navInner {
+    position: relative;
+    height: 100%;
+}
+
+.displayClose {
+  display: none;
+}
+
+@media (max-width:767px) { 
+  .header__middle .active {color: #ff3d00!important;}
+}
+
+@media (min-width:992px) { 
+  .sub__menus__arrows:hover .sub__menus{
+    display: block;
+  }
+  .sub__menus__arrows__full:hover .sub__menus{
+    display: block;
+    z-index: 1000000;
+  }
+}
+
+@media(max-width:991px){
+.header__middle__logo {width: 72%;}
+.header__middle__menus {width: 20%;}
+.header__middle__logo img {max-width: 197px;margin: 27px 0 0 0;}
+.main-nav .menubar__button:hover {background-color: #f44336;}
+.main-nav .menu-item:hover > a {color: #07a8ff !important}
+.main-nav .menubar__button {
+  display: block!important;
+  float: right;
+  background-color: #080808;
+  color: #fff;
+  padding: 6px 7px;
+  border-radius: 5px;
+  margin: 27px auto 0;
+  cursor: pointer;
+  position: relative;
+  z-index: 10037;
+}
+.main-nav .menubar__button svg{font-size: 27px;}
+.main-nav ul.menuq2 {
+  display: block!important;
+  position: absolute;
+  left: 0;
+  z-index: 10007;
+  background-color: #d8f1ff;
+  border-bottom: 3px solid #ff3d00;
+  right: 0;
+  padding-bottom: 17px;
+  padding-top: 57px;
+}
+.main-nav .menu-item a {margin: 10px 17px;text-align: center;color: #000000;}
+.main-nav  ul.main-menu {display: none}
+.main-nav .sub__menus__arrows:hover .sub__menus {margin: 0 auto;left: 0;right: 0;}
+.sub__menus__Active{display: block!important;margin: 0 auto;left: 0;right: 0;}
+.sub__menus__Active2{display: block!important;}
+.menus__categorysss{display: none;}
+.menus__categorysss2{display: none;}
+.menu-item .sub__menus__full a {text-align: left;}
+
+}
