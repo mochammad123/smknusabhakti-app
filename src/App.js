@@ -1,18 +1,17 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import NavbarMenu from "./components/nav/NavbarMenu";
-import LandingHome from "./components/screens/LandingHome";
-import LandingBackground from "./components/screens/LandingBackground";
-import LandingVisionMission from "./components/screens/LandingVisionMission";
-import LandingGoal from "./components/screens/LandingGoal";
-import LandingPharmacy from "./components/screens/LandingPharmacy";
-import LandingChemical from "./components/screens/LandingChemical";
-import LandingNurse from "./components/screens/LandingNurse";
-import News from "./components/news/News";
-import NewsVideo from "./components/news/NewsVideo";
-import Galery from "./components/galery/Galery";
-import NewStudents from "./components/ppdb/NewStudents";
-import Login from "./components/login/Login";
+import LandingHome from "../src/landing_page/components/screens/LandingHome";
+import LandingBackground from "../src/landing_page/components/screens/LandingBackground";
+import LandingVisionMission from "../src/landing_page/components/screens/LandingVisionMission";
+import LandingGoal from "../src/landing_page/components/screens/LandingGoal";
+import LandingPharmacy from "../src/landing_page/components/screens/LandingPharmacy";
+import LandingChemical from "../src/landing_page/components/screens/LandingChemical";
+import LandingNurse from "../src/landing_page/components/screens/LandingNurse";
+import News from "../src/landing_page/components/news/News";
+import NewsVideo from "../src/landing_page/components/news/NewsVideo";
+import Galery from "../src/landing_page/components/galery/Galery";
+import NewStudents from "../src/landing_page/components/ppdb/NewStudents";
+import Login from "../src/landing_page/components/login/Login";
 
 function App() {
   return (
