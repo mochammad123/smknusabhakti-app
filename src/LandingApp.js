@@ -12,7 +12,10 @@ import News from "../src/landing_page/components/news/News";
 import NewsVideo from "../src/landing_page/components/news/NewsVideo";
 import Galery from "../src/landing_page/components/galery/Galery";
 import NewStudents from "../src/landing_page/components/ppdb/NewStudents";
-import Login from "../src/landing_page/components/login/Login3";
+import Login from "../src/landing_page/components/login/LoginSide";
+import Dashboard from "../src/dashboard/Dashboard";
+import PrivateComponent from "./PrivateComponent";
+import NewsDashboard from "./dashboard/NewsDashboard";
 
 // ==============================|| APP ||============================== //
 
@@ -32,6 +35,24 @@ const LandingApp = () => {
         <Route exact path="/gallery" element={<Galery />} />
         <Route exact path="/ppdb" element={<NewStudents />} />
         <Route exact path="/login" element={<Login />} />
+        <Route
+          exact
+          path="/dashboard"
+          element={
+            <PrivateComponent>
+              <Dashboard />
+            </PrivateComponent>
+          }
+        />
+        <Route
+          exact
+          path="/dashboard/news"
+          element={
+            <PrivateComponent>
+              <NewsDashboard />
+            </PrivateComponent>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

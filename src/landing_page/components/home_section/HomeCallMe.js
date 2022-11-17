@@ -16,7 +16,7 @@ const HomeCallMe = () => {
             <div className="flexCenter">
               <a href="https://www.instagram.com/smknusabhaktibandung/">
                 <svg
-                  class="w-12 h-12 text-red-600 fill-current"
+                  className="w-12 h-12 text-red-600 fill-current"
                   mlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -28,7 +28,7 @@ const HomeCallMe = () => {
 
               <a href="https://www.facebook.com/nusabhakti.bandung">
                 <svg
-                  class="w-12 h-12 text-blue-600 fill-current"
+                  className="w-12 h-12 text-blue-600 fill-current"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -40,7 +40,7 @@ const HomeCallMe = () => {
 
               <a href=" https://wa.me/+6287829887357">
                 <svg
-                  class="w-12 h-12 text-green-400 fill-current"
+                  className="w-12 h-12 text-green-400 fill-current"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"

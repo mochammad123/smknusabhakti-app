@@ -2,7 +2,14 @@ import { Link } from "react-router-dom";
 
 // material-ui
 import { useTheme } from "@mui/material/styles";
-import { Divider, Grid, Stack, Typography, useMediaQuery } from "@mui/material";
+import {
+  Alert,
+  Divider,
+  Grid,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import AuthWrapper1 from "../../../views/pages/authentication/AuthWrapper1";
 import AuthCardWrapper from "../../../views/pages/authentication/AuthCardWrapper";
 import Logo from "../../../ui-component/Logo";
