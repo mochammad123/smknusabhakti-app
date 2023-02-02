@@ -22,8 +22,9 @@ import {
   Stack,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import highSchoolApi from "../../../apis/highSchoolApi";
 
 const theme = createTheme();
 
@@ -41,12 +42,7 @@ export default function SignInSide() {
   const [validation, setValidation] = React.useState([]);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
-
-  React.useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/dashboard");
-    }
-  });
+  const token = localStorage.getItem("token");
 
   const loginHandler = async (e) => {
     e.preventDefault();
@@ -57,17 +53,30 @@ export default function SignInSide() {
     formData.append("email", email);
     formData.append("password", password);
 
-    await axios
-      .post("http://127.0.0.1:8000/api/login", formData)
+    await highSchoolApi
+      .post("login", formData)
       .then((response) => {
         setIsLoading(false);
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("name", response.data.data.name);
+        localStorage.setItem("company", response.data.data.company_name);
 
-        navigate("/dashboard");
+        Swal.fire({
+          icon: "success",
+          title: "Yeah",
+          text: "Login Success",
+        }).then(function () {
+          navigate("/dashboard/main-dashboard");
+        });
       })
       .catch((error) => {
         setValidation(error.response.data);
         setIsLoading(false);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
       });
   };
 
@@ -82,11 +91,9 @@ export default function SignInSide() {
     event.preventDefault();
   };
 
-  function handleClick() {
-    setIsLoading(true);
-  }
-
-  return (
+  return token ? (
+    <Navigate to="/dashboard/main-dashboard" />
+  ) : (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
@@ -130,11 +137,6 @@ export default function SignInSide() {
             >
               Hi, Welcome Back!
             </Typography>
-            <Stack sx={{ width: "100%", mt: 3 }}>
-              {validation.message && (
-                <Alert severity="error">Email atau Password salah!</Alert>
-              )}
-            </Stack>
             <Box
               component="form"
               noValidate

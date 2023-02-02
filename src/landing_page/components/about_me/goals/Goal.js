@@ -6,7 +6,7 @@ import Header from "../../templates/Header";
 const Goal = () => {
   return (
     <>
-      <div className="container wrapper2 flexSpaceCenter">
+      <div className="container wrapper2 flexSpaceCenter text-black">
         <div className="row">
           <Header title="Tujuan Sekolah" />
 

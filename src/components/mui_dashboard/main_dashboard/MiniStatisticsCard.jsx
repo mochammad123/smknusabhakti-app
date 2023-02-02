@@ -1,13 +1,67 @@
 import { Card, Avatar, CardHeader, Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+import highSchoolApi from "../../../apis/highSchoolApi";
 
 const MiniStatisticsCard = () => {
+  const [dataBlog, setDataBlog] = useState("");
+  const [dataVideo, setDataVideo] = useState("");
+  const [dataGalery, setDataGalery] = useState("");
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    fetchBlogs();
+    fetchVideos();
+    fetchGaleries();
+  }, []);
+
+  // Get all data Videos
+  const fetchBlogs = async () => {
+    await highSchoolApi
+      .get(`blognews`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setDataBlog(response.data.data);
+      })
+      .catch((error) => {});
+  };
+
+  // Get all data Videos
+  const fetchVideos = async () => {
+    await highSchoolApi
+      .get(`videonews`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setDataVideo(response.data.data);
+      })
+      .catch((error) => {});
+  };
+
+  // Get all data Videos
+  const fetchGaleries = async () => {
+    await highSchoolApi
+      .get(`galery`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setDataGalery(response.data.data);
+      })
+      .catch((error) => {});
+  };
+
   return (
     <>
       <Grid item xs={12} md={4} lg={4}>
-        <Card sx={{ display: "flex" }} elevation="6">
+        <Card sx={{ display: "flex" }} elevation={6}>
           <Box
             sx={{
               display: "flex",
@@ -30,7 +84,7 @@ const MiniStatisticsCard = () => {
                 </Avatar>
               }
               title="Berita"
-              subheader="12 Postingan"
+              subheader={`${dataBlog.length} Postingan`}
               titleTypographyProps={{
                 sx: {
                   fontFamily: "Poppins",
@@ -47,7 +101,7 @@ const MiniStatisticsCard = () => {
         </Card>
       </Grid>
       <Grid item xs={12} md={4} lg={4}>
-        <Card sx={{ display: "flex" }} elevation="6">
+        <Card sx={{ display: "flex" }} elevation={6}>
           <Box
             sx={{
               display: "flex",
@@ -70,7 +124,7 @@ const MiniStatisticsCard = () => {
                 </Avatar>
               }
               title="Berita Video"
-              subheader="12 Postingan"
+              subheader={`${dataVideo.length} Postingan`}
               titleTypographyProps={{
                 sx: {
                   fontFamily: "Poppins",
@@ -87,7 +141,7 @@ const MiniStatisticsCard = () => {
         </Card>
       </Grid>
       <Grid item xs={12} md={4} lg={4}>
-        <Card sx={{ display: "flex" }} elevation="6">
+        <Card sx={{ display: "flex" }} elevation={6}>
           <Box
             sx={{
               display: "flex",
@@ -110,7 +164,7 @@ const MiniStatisticsCard = () => {
                 </Avatar>
               }
               title="Galeri"
-              subheader="12 Postingan"
+              subheader={`${dataGalery.length} Postingan`}
               titleTypographyProps={{
                 sx: {
                   fontFamily: "Poppins",

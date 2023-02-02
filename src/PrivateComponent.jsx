@@ -15,6 +15,15 @@ const PrivateComponent = ({ children, loginOnly = true }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const { exp } = jwtDecode(token);
+    const expirationTime = exp * 1000 - 60000;
+    if (Date.now() >= expirationTime) {
+      localStorage.clear();
+      navigate("/login");
+    }
+  }, []);
+
   return children ? children : <>Loading</>;
 };
 

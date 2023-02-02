@@ -5,7 +5,7 @@ import "./../../major/major.css";
 const Nurse = () => {
   return (
     <>
-      <div className="container wrapper2 flexSpaceCenter">
+      <div className="container wrapper2 flexSpaceCenter text-black">
         <div className="row">
           <Header title="Keperawatan" />
 

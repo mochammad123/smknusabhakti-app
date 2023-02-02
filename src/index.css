@@ -5,13 +5,13 @@
 * {
   margin: 0;
   padding: 0;
-  border: none;
   outline: none;
 }
 
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
+  background: white;
 }
 
 ::-webkit-scrollbar-thumb {

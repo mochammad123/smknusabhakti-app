@@ -3,7 +3,7 @@ import "./../footer/footer.css";
 
 const Footer = () => {
   return (
-    <footer className="wrapperFooter">
+    <footer className="wrapperFooter bg-white">
       <div className="darkBg">
         <div className="container">
           <div className="innerWrapper flexSpaceCenter">

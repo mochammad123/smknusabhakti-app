@@ -1,13 +1,15 @@
 import React from "react";
 import VisionMission from "../about_me/vision_mission/VisionMission";
 import Footer from "../footer/Footer";
-import Navbar from "../navbar/Navbar";
+import NavbarDaisy from "../navbar/NavbarDaisy";
 
 const LandingVisionMission = () => {
   return (
     <>
-      <Navbar />
-      <VisionMission />
+      <NavbarDaisy />
+      <div className="bg-white">
+        <VisionMission />
+      </div>
       <Footer />
     </>
   );

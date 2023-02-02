@@ -9,15 +9,17 @@ import HomeCallMe from "../home_section/HomeCallMe";
 const Home = () => {
   return (
     <>
-      <HomeWelcome />
+      <div className="bg-white">
+        <HomeWelcome />
 
-      <HomeProfile />
+        <HomeProfile />
 
-      <HomeMajor />
+        <HomeMajor />
 
-      <HomeNews />
+        <HomeNews />
 
-      <HomeCallMe />
+        <HomeCallMe />
+      </div>
     </>
   );
 };

@@ -21,10 +21,12 @@ const HomeProfile = () => {
         </div>
         <div className="rightSide flexCenter">
           <div className="fontRecovery">
-            <h1 className="extraBold font60">Selamat Datang,</h1>
-            <h1 className="extraBold font50">SMK Nusa Bhakti Bandung.</h1>
+            <h1 className="extraBold font60 text-sky-900">Selamat Datang,</h1>
+            <h1 className="extraBold font50 text-sky-900">
+              SMK Nusa Bhakti Bandung.
+            </h1>
             <div
-              className="headerHome font18 semiBold"
+              className="headerHome font18 semiBold text-sky-800"
               style={{ textAlign: "justify" }}
             >
               Sebagai media informasi dan komunikasi, website SMK Nusa Bhakti

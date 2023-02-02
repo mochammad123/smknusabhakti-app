@@ -4,7 +4,7 @@ import "./../home/home.css";
 const HomeCallMe = () => {
   return (
     <>
-      <section className="container wrapper2 flexSpaceCenter">
+      <section className="container wrapper2 flexSpaceCenter text-black">
         <div className="leftSide flexCenter">
           <div>
             <h1

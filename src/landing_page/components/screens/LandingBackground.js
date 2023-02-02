@@ -1,13 +1,15 @@
 import React from "react";
 import Background from "../about_me/background/Background";
 import Footer from "../footer/Footer";
-import Navbar from "../navbar/Navbar";
+import NavbarDaisy from "../navbar/NavbarDaisy";
 
 const LandingBackground = () => {
   return (
     <>
-      <Navbar />
-      <Background />
+      <NavbarDaisy />
+      <div className="bg-white">
+        <Background />
+      </div>
       <Footer />
     </>
   );

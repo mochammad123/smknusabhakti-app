@@ -5,12 +5,12 @@ const CardNews = ({ data }) => {
     <>
       <div className="card">
         <div className="card-head">
-          <img src={data.background} alt="" className="card-img" />
+          <img src={data.data.image} alt="" className="card-img" />
         </div>
         <div className="card-body">
-          <h3>{data.date}</h3>
-          <h1>{data.title}</h1>
-          <p>{data.body}</p>
+          <h3>{data.data.created_at}</h3>
+          <h1>{data.data.title}</h1>
+          <p>{data.data.body}</p>
           <div className="card-footer">
             <svg
               className="w-6 h-6"

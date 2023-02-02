@@ -1,13 +1,15 @@
 import React from "react";
 import Nurse from "../major/nurse/Nurse";
 import Footer from "../footer/Footer";
-import Navbar from "../navbar/Navbar";
+import NavbarDaisy from "../navbar/NavbarDaisy";
 
 const LandingNurse = () => {
   return (
     <>
-      <Navbar />
-      <Nurse />
+      <NavbarDaisy />
+      <div className="bg-white">
+        <Nurse />
+      </div>
       <Footer />
     </>
   );

@@ -1,12 +1,12 @@
 import React from "react";
 import Home from "../home/Home";
 import Footer from "../footer/Footer";
-import Navbar from "../navbar/Navbar";
+import NavbarDaisy from "../navbar/NavbarDaisy";
 
 const LandingHome = () => {
   return (
     <>
-      <Navbar />
+      <NavbarDaisy />
       <Home />
       <Footer />
     </>

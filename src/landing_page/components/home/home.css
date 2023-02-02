@@ -37,7 +37,7 @@ img {
 
 .dotsWrapper {
     position: absolute;
-    right: -100px;
+    right: -60px;
     bottom: 100px;
     z-index: 2;
 }

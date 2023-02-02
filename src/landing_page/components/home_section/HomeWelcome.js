@@ -10,8 +10,10 @@ const HomeWelcome = () => {
       <section className="container wrapper flexSpaceCenter">
         <div className="leftSide flexCenter">
           <div>
-            <h1 className="extraBold font60">SMK Nusa Bhakti Bandung.</h1>
-            <div className="headerHome font18 semiBold">
+            <h1 className="extraBold font60 text-sky-900">
+              SMK Nusa Bhakti Bandung.
+            </h1>
+            <div className="headerHome font18 semiBold text-sky-800">
               Farmasi, Analisis Kimia dan Keperawatan. <br />
               Jl. Cilentah No. 30, Kel. Burangrang, Kec. Lengkong, Kota Bandung,
               Jawa Barat 40262. <br />
@@ -22,7 +24,7 @@ const HomeWelcome = () => {
         <div className="rightSide">
           <div className="imageWrapper">
             <img
-              className="radius8 imageWrapperBackground"
+              className="radius8 imageWrapperBackground z-0"
               src={Background}
               alt="office"
             />

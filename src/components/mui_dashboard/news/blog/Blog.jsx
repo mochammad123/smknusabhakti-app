@@ -2,19 +2,18 @@ import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
-import "../App.css";
-import AppBarDashboard from "./AppBarDashboard";
-import DrawerDashboard from "./DrawerDashboard";
+import AppDrawer from "../../AppDrawer";
+import MainBlog from "./MainBlog";
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+const Blog = () => {
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBarDashboard />
-        <DrawerDashboard />
+
+        <AppDrawer title="Blogs" />
         <Box
           component="main"
           sx={{
@@ -26,12 +25,12 @@ function DashboardContent() {
             height: "100vh",
             overflow: "auto",
           }}
-        ></Box>
+        >
+          <MainBlog />
+        </Box>
       </Box>
     </ThemeProvider>
   );
-}
+};
 
-export default function NewsDashboard() {
-  return <DashboardContent />;
-}
+export default Blog;

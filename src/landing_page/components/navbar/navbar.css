@@ -1,10 +1,10 @@
 .menu{
     cursor: pointer;
 }
-.menu:hover {
+/* .menu:hover {
     color: #ff5800;
     cursor: pointer;
-}
+} */
 
 .is-active {
 	color: #ff5800!important;

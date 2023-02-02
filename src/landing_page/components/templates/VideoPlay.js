@@ -1,6 +1,7 @@
 import React from "react";
 
 const VideoPlay = ({ data }) => {
+  const { id, title, video } = data;
   return (
     <>
       <div className="card">
@@ -8,12 +9,13 @@ const VideoPlay = ({ data }) => {
           <iframe
             className="our-videos"
             style={{ maxHeight: "50vh" }}
-            src={data.video}
-            title={data.title}
-          />
+            src={video}
+            title={title}
+          ></iframe>
         </div>
+
         <div className="card-body">
-          <h1>{data.title}</h1>
+          <h1 className="line-clamp-1">{title}</h1>
         </div>
       </div>
     </>

@@ -1,0 +1,8 @@
+.is-Active {
+    background-color: white;
+    border-radius: 25px;
+    color: black;
+    border-right: orange;
+    background: white;
+    font-style: italic;
+}

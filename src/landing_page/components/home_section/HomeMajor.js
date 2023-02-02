@@ -7,7 +7,7 @@ import Nurse from "./../../assets/images/nurse.png";
 const HomeMajor = () => {
   return (
     <>
-      <section className="container wrapper">
+      <section className="container wrapper text-black">
         <div className="extraBold font60 title-name">
           <h1>Jurusan</h1>
         </div>

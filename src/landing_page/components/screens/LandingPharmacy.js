@@ -1,13 +1,15 @@
 import React from "react";
 import Pharmacy from "../major/pharmacy/Pharmacy";
 import Footer from "../footer/Footer";
-import Navbar from "../navbar/Navbar";
+import NavbarDaisy from "../navbar/NavbarDaisy";
 
 const LandingPharmacy = () => {
   return (
     <>
-      <Navbar />
-      <Pharmacy />
+      <NavbarDaisy />
+      <div className="bg-white">
+        <Pharmacy />
+      </div>
       <Footer />
     </>
   );

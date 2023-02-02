@@ -1,13 +1,15 @@
 import React from "react";
 import Chemical from "../major/chemical/Chemical";
 import Footer from "../footer/Footer";
-import Navbar from "../navbar/Navbar";
+import NavbarDaisy from "../navbar/NavbarDaisy";
 
 const LandingChemical = () => {
   return (
     <>
-      <Navbar />
-      <Chemical />
+      <NavbarDaisy />
+      <div className="bg-white">
+        <Chemical />
+      </div>
       <Footer />
     </>
   );
