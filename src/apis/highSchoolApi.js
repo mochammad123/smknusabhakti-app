@@ -1,10 +1,14 @@
 import axios from "axios";
 
 // const baseUrl = "http://127.0.0.1:8000/api/";
-const baseUrl = "https://ohaouuu.000webhostapp.com/api/";
+const baseUrl = "http://smknusabhakti.rf.gd/api/";
 
 const highSchoolApi = axios.create({
   baseURL: baseUrl,
+  // headers: {
+  //   "Content-Type": "application/json",
+  //   "Access-Control-Allow-Origin": "*",
+  // },
 });
 
 // highSchoolApi.interceptors.response.use(
