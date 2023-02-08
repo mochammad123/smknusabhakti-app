@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const baseUrl = "http://127.0.0.1:8000/api/";
-const baseUrl = "http://smknusabhakti.rf.gd/api/";
+const baseUrl = "http://faisal.aminaja.com/api/";
 
 const highSchoolApi = axios.create({
   baseURL: baseUrl,
