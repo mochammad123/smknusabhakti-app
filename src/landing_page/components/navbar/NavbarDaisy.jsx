@@ -395,7 +395,7 @@ const NavbarDaisy = (props) => {
             </a>
           </button>
           <a
-            className="normal-case text-xl font-bold"
+            className="normal-case text-sm lg:text-xl md:text-lg font-bold"
             style={
               y > 100
                 ? {

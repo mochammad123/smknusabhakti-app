@@ -151,7 +151,7 @@ const HomeNews = () => {
                 className="fixed inset-0 w-full h-full bg-black opacity-40"
                 onClick={() => setShowModal(false)}
               ></div>
-              <div className="flex items-center h-full px-4 py-8 ">
+              <div className="flex items-center h-full ">
                 <div className="relative w-full h-full p-4 mx-auto bg-white rounded-md shadow-lg overflow-y-auto">
                   <div
                     className="flex justify-end"
@@ -176,7 +176,7 @@ const HomeNews = () => {
                   </div>
 
                   <div className="mt-3 sm:flex">
-                    <div className="mt-2 text-center sm:text-left w-full mr-5 ml-5 mb-3">
+                    <div className="mt-2 w-full ml-0 mr-0 lg:mr-5 lg:ml-5 md:mr-5 md:ml-5 mb-3">
                       <div className="flex justify-center">
                         <img
                           src={filePreview}
@@ -186,10 +186,7 @@ const HomeNews = () => {
                         />
                       </div>
                       <div className="flex justify-center mt-5">
-                        <h2
-                          className="font-bold text-gray-800 mb-2"
-                          style={{ fontSize: "40px" }}
-                        >
+                        <h2 className="font-bold text-gray-800 mb-2 text-lg lg:text-3xl md:text-2xl">
                           {title}
                         </h2>
                       </div>
@@ -204,10 +201,7 @@ const HomeNews = () => {
                           {dateFormat(created_at, "d, mmmm yyyy")}
                         </Typography>
                       </div>
-                      <div
-                        className="text-gray-800 mb-2"
-                        style={{ fontSize: "20px" }}
-                      >
+                      <div className="text-gray-800 mb-2 text-sm lg:text-lg md:text-base">
                         {ReactHtmlParser(body)}
                       </div>
                     </div>

@@ -19,7 +19,7 @@ const HomeProfile = () => {
             </div>
           </div>
         </div>
-        <div className="rightSide flexCenter">
+        <div className="rightSide flexCenter lg:ml-2 md:ml-4 sm:ml-0">
           <div className="fontRecovery">
             <h1 className="extraBold font60 text-sky-900">Selamat Datang,</h1>
             <h1 className="extraBold font50 text-sky-900">
