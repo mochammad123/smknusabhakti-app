@@ -54,7 +54,7 @@ const NewsVideo = () => {
           <div className="row">
             <Header title="Berita Video" />
 
-            <div className="flex justify-end mt-10">
+            <div className="flex justify-center sm:justify-end mt-10">
               <form onSubmit={handleSubmitSearch}>
                 <div className="form-control">
                   <div className="input-group">
@@ -86,13 +86,11 @@ const NewsVideo = () => {
               </form>
             </div>
 
-            <Grid container mt={4} direction="row" spacing={2}>
+            <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-4 mt-5">
               {news.data?.map((item, index) => (
-                <Grid item xs={12} md={4} sm={1}>
-                  <VideoPlay key={index} data={item} />
-                </Grid>
+                <VideoPlay key={index} data={item} />
               ))}
-            </Grid>
+            </div>
             <div className="flex justify-center mt-20">
               <Stack spacing={2}>
                 <Pagination

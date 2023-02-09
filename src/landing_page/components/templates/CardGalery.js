@@ -99,7 +99,7 @@ const CardGalery = ({ data }) => {
               className="fixed inset-0 w-full h-full bg-black opacity-40"
               onClick={() => setShowModal(false)}
             ></div>
-            <div className="flex items-center h-full px-4 py-8 ">
+            <div className="flex items-center min-h-screen lg:h-full md:h-full px-4 py-8 ">
               <div className="relative w-full h-full p-4 mx-auto bg-white rounded-md shadow-lg overflow-y-auto ">
                 <div
                   className="flex justify-end"

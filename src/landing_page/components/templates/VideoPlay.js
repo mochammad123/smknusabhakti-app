@@ -17,23 +17,25 @@ const VideoPlay = ({ data }) => {
 
   return (
     <>
-      <div className="card">
-        <div className="card-head">
-          <img src={WatchUs} alt="" className="card-img" />
-        </div>
-        <div className="card-body">
-          <h1 className="line-clamp-1">{title}</h1>
-        </div>
-        <div className="">
-          <button
-            className="btn btn-success rounded-lg w-full"
-            onClick={() => {
-              setItem(item);
-              setShowModal(true);
-            }}
-          >
-            Tonton
-          </button>
+      <div className="mt-0 lg:mt-20 md:mt-10">
+        <div className="card bg-white drop-shadow-2xl">
+          <figure className="w-full h-60 overflow-hidden">
+            <img src={WatchUs} alt="" className="card-img" />
+          </figure>
+          <div className="card-body">
+            <h2 className="line-clamp-1 text-lg font-bold mt-5">{title}</h2>
+            <div className="card-actions">
+              <button
+                className="btn bg-sky-900 rounded-lg w-full border-none text-white hover:bg-sky-800 mt-10"
+                onClick={() => {
+                  setItem(item);
+                  setShowModal(true);
+                }}
+              >
+                Watching
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       {showModal ? (
@@ -43,7 +45,7 @@ const VideoPlay = ({ data }) => {
               className="fixed inset-0 w-full h-full bg-black opacity-40"
               onClick={() => setShowModal(false)}
             ></div>
-            <div className="flex items-center h-full px-4 py-8 ">
+            <div className="flex items-center min-h-screen lg:h-full px-4 py-8 ">
               <div className="relative w-full h-full p-4 mx-auto bg-white rounded-md shadow-lg overflow-y-auto">
                 <div
                   className="flex justify-end"

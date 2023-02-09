@@ -108,7 +108,7 @@ const News = () => {
         <div className="container wrapper2 flexSpaceCenter text-black">
           <div className="row">
             <Header title="Berita" />
-            <div className="flex justify-end mt-10">
+            <div className="flex justify-center sm:justify-end mt-10">
               <form onSubmit={handleSubmitSearch}>
                 <div className="form-control">
                   <div className="input-group">

@@ -52,7 +52,7 @@ const Galery = () => {
           <div className="row">
             <Header title="Galeri" />
 
-            <div className="flex justify-end mt-10">
+            <div className="flex justify-center sm:justify-end mt-10">
               <form onSubmit={handleSubmitSearch}>
                 <div className="form-control">
                   <div className="input-group">

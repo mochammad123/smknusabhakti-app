@@ -4,7 +4,7 @@ import BackgroundImage from "./../../assets/images/background-1.png";
 const Header = ({ title }) => {
   return (
     <>
-      <div className="card-item">
+      <div className="card-item mt-10">
         <div className="card-main">
           <div className="card-image">
             <img src={BackgroundImage} alt="" className="card-img" />
