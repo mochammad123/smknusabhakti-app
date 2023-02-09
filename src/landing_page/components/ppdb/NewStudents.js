@@ -72,7 +72,7 @@ const NewStudents = () => {
                     </p>{" "}
                     <br />
                     <Button variant="contained" fullWidth>
-                      <a href=" https://wa.me/+6287829887357">
+                      <a href=" https://wa.me/+6287829887357?text=Saya%20ingin%20mendaftar%20di%20SMK%20Nusa%20Bhakti%20Bandung">
                         Daftar Siswa Baru
                       </a>
                     </Button>
