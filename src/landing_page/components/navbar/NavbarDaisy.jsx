@@ -299,24 +299,45 @@ const NavbarDaisy = (props) => {
         <ListItem disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
             <ListItemText>
-              <NavLink to="/login">
-                <Button
-                  variant="contained"
-                  fullWidth
-                  sx={{
-                    borderRadius: "20px",
-                    textTransform: "capitalize",
-                    fontWeight: "bold",
-                    background: "#ff5800",
-                    "&:hover": {
-                      background: "red",
-                    },
-                  }}
-                  onClick={handleDrawerToggle}
-                >
-                  Login
-                </Button>
-              </NavLink>
+              {token ? (
+                <NavLink to="/dashboard/main-dashboard">
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      borderRadius: "20px",
+                      textTransform: "capitalize",
+                      fontWeight: "bold",
+                      background: "#ff5800",
+                      "&:hover": {
+                        background: "red",
+                      },
+                    }}
+                    onClick={handleDrawerToggle}
+                  >
+                    Dashboard
+                  </Button>
+                </NavLink>
+              ) : (
+                <NavLink to="/login">
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      borderRadius: "20px",
+                      textTransform: "capitalize",
+                      fontWeight: "bold",
+                      background: "#ff5800",
+                      "&:hover": {
+                        background: "red",
+                      },
+                    }}
+                    onClick={handleDrawerToggle}
+                  >
+                    Login
+                  </Button>
+                </NavLink>
+              )}
             </ListItemText>
           </ListItemButton>
         </ListItem>
@@ -695,13 +716,26 @@ const NavbarDaisy = (props) => {
           </ul>
         </div>
         <div className="navbar-end hidden lg:flex">
-          <NavLink className="bg-transparent py-3 block" to="/login">
-            <button className="btn bg-orange-500 hover:bg-orange-600 rounded-full border-0 mr-2 text-white capitalize">
-              <p className="pr-3 pl-3" style={{ fontSize: "15px" }}>
-                Login
-              </p>
-            </button>
-          </NavLink>
+          {token ? (
+            <NavLink
+              className="bg-transparent py-3 block"
+              to="/dashboard/main-dashboard"
+            >
+              <button className="btn bg-sky-400 hover:bg-sky-500 rounded-full border-0 mr-2 text-white capitalize">
+                <p className="pr-3 pl-3" style={{ fontSize: "15px" }}>
+                  Dashboard
+                </p>
+              </button>
+            </NavLink>
+          ) : (
+            <NavLink className="bg-transparent py-3 block" to="/login">
+              <button className="btn bg-orange-500 hover:bg-orange-600 rounded-full border-0 mr-2 text-white capitalize">
+                <p className="pr-3 pl-3" style={{ fontSize: "15px" }}>
+                  Login
+                </p>
+              </button>
+            </NavLink>
+          )}
         </div>
       </div>
 
