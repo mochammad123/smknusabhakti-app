@@ -8,23 +8,24 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Swal from "sweetalert2";
-import useVideoApi from "../../../../apis/videoApi";
 
-const TabelListVideo = () => {
-  const {
-    videos,
-    isLoading,
-    error,
-    getVideos,
-    getAllVideos,
-    deleteVideo,
-    updateVideo,
-  } = useVideoApi();
+const TabelListVideo = ({
+  dataVideo,
+  deleteVideoHandler,
+  updateVideoHandler,
+}) => {
   const [item, setItem] = useState("");
   const [showModalUpdate, setShowModalUpdate] = useState(false);
-  let page = 0;
-  let perPage = 0;
+  const [isLoading, setIsLoading] = useState(false);
+  const page = dataVideo.current_page;
+  const perPage = dataVideo.per_page;
   let paginate = 0;
+
+  if (page * perPage === 10) {
+    paginate = 0;
+  } else {
+    paginate = page * perPage - 10;
+  }
 
   const { id, title: newTitle, video: newVideo } = item;
   const [title, setTitle] = useState(newTitle);
@@ -33,22 +34,7 @@ const TabelListVideo = () => {
   useEffect(() => {
     setTitle(newTitle);
     setVideo(newVideo);
-    if (videos != 0) {
-      page = videos.data.current_page;
-      perPage = videos.data.per_page;
-    }
-
-    if (page * perPage === 10) {
-      paginate = 0;
-    } else {
-      paginate = page * perPage - 10;
-    }
   }, [newTitle, newVideo]);
-
-  useEffect(() => {
-    getVideos();
-    getAllVideos();
-  }, []);
 
   // close modal
   const handleCloseChange = (event) => {
@@ -57,49 +43,25 @@ const TabelListVideo = () => {
     setVideo(newVideo);
   };
 
-  // update data blog
-  const updateVideoHandler = async (id, title, video) => {
-    const filtered = videos.data.data
-      .filter((videos) => videos.id === id)
-      .map((videos) => ({
-        title: title,
-        video: video,
-      }));
-
-    await updateVideo(id, filtered[0]).then((response) => {
-      setShowModalUpdate(false);
-      getAllVideos();
-      getVideos();
-    });
-  };
-
   const handleEdit = async (e) => {
     e.preventDefault();
-    await updateVideoHandler(id, title, video);
-  };
+    setIsLoading(true);
 
-  // delete video
-  const deleteVideoHandler = async (id) => {
-    const isConfirm = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      return result.isConfirmed;
-    });
-
-    if (!isConfirm) {
-      return;
-    }
-
-    await deleteVideo(id).then((response) => {
-      getVideos();
-      getAllVideos();
-    });
+    try {
+      await updateVideoHandler(id, title, video)
+        .then((response) => {
+          setIsLoading(false);
+          setShowModalUpdate(false);
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Opss...",
+            text: error.response.data.message,
+          });
+          setIsLoading(false);
+        });
+    } catch (error) {}
   };
 
   return (
@@ -129,7 +91,7 @@ const TabelListVideo = () => {
               </TableCell>
             </TableRow>
           </TableHead>
-          {!videos || videos == 0 ? (
+          {!dataVideo ? (
             <TableBody>
               <TableRow>
                 <TableCell align="center" colSpan={3}>
@@ -137,7 +99,7 @@ const TabelListVideo = () => {
                 </TableCell>
               </TableRow>
             </TableBody>
-          ) : videos && videos.data && videos.data.data.length === 0 ? (
+          ) : dataVideo && dataVideo.data && dataVideo.data.length === 0 ? (
             <TableBody>
               <TableRow>
                 <TableCell align="center" colSpan={3}>
@@ -147,7 +109,7 @@ const TabelListVideo = () => {
             </TableBody>
           ) : (
             <TableBody>
-              {videos.data.data?.map((item, index) => {
+              {dataVideo.data?.map((item, index) => {
                 const { id, title } = item;
                 return (
                   <TableRow

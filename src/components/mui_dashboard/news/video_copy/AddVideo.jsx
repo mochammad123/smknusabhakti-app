@@ -1,64 +1,42 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { Typography } from "@mui/material";
-import useBlogApi from "../../../../apis/blogApi";
 
-const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
-  const { isLoading, error, getBlogs, getAllBlogs, createBlog } = useBlogApi();
+const AddVideo = ({
+  addVideoHandler,
+  keyword,
+  handleChangeKeyword,
+  handleSubmitSearch,
+}) => {
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
-  const [body, setBody] = useState("");
+  const [video, setVideo] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [preview, setPreview] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [validation, setValidation] = useState([]);
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setImage(file);
-    setPreview(URL.createObjectURL(file));
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-  const handleEditorChange = (event, editor) => {
-    setBody(editor.getData());
-  };
-
-  const handleCreate = async (event) => {
-    event.preventDefault();
-
-    const reader = new FileReader();
-    if (image) {
-      reader.readAsDataURL(image);
-      reader.onload = async () => {
-        try {
-          const base64 = reader.result.split(",")[1];
-          await createBlog({ title: title, image: base64, body: body }).then(
-            (response) => {
-              setTitle("");
-              setImage(null);
-              setPreview("");
-              setBody("");
-              setShowModal(false);
-              getAllBlogs();
-              getBlogs();
-            }
-          );
-        } catch (error) {}
-      };
-    } else {
-      try {
-        await createBlog({ title: title, image: null, body: body }).then(
-          (response) => {
-            setTitle("");
-            setImage(null);
-            setPreview("");
-            setBody("");
-            setShowModal(false);
-            getAllBlogs();
-            getBlogs();
-          }
-        );
-      } catch (error) {}
-    }
+    try {
+      await addVideoHandler({ title: title, video: video })
+        .then((response) => {
+          setTitle("");
+          setVideo("");
+          setIsLoading(false);
+          setShowModal(false);
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Opss...",
+            text: error.response.data.message,
+          });
+          setIsLoading(false);
+        });
+    } catch (error) {}
   };
 
   return (
@@ -100,7 +78,7 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
           type="button"
           onClick={() => setShowModal(true)}
         >
-          Add Blog
+          Add Video
         </button>
         {showModal ? (
           <>
@@ -117,7 +95,7 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
                         Create Blog
                       </h4>
                       <hr className="mb-8" />
-                      <form onSubmit={handleCreate}>
+                      <form onSubmit={handleSubmit}>
                         <p className="mt-2 mb-5 text-[15px] leading-relaxed text-gray-500">
                           Title
                         </p>
@@ -128,43 +106,15 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
                           value={title}
                           onChange={(e) => setTitle(e.target.value)}
                         />
-                        {/* Image */}
-                        <p className="mt-2 mb-2 text-[15px] leading-relaxed text-gray-500">
-                          Image
-                        </p>
-                        {preview ? (
-                          <>
-                            <div className="flex justify-center">
-                              <img
-                                src={preview}
-                                alt="Preview Img"
-                                style={{ width: 100, marginTop: "10px" }}
-                                className="bg-gray-200 rounded-md"
-                              />
-                            </div>
-                            <div className="flex justify-center">
-                              <Typography sx={{ marginBottom: "10px" }}>
-                                Preview
-                              </Typography>
-                            </div>
-                          </>
-                        ) : (
-                          ""
-                        )}
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="file-input file-input-bordered border-gray-400 file-input-md bg-white w-full hover:border-black"
-                          onChange={handleImageChange}
-                        />
-                        {/* Blog */}
                         <p className="mt-2 mb-5 text-[15px] leading-relaxed text-gray-500">
-                          Blog
+                          Link Video
                         </p>
-                        <CKEditor
-                          editor={ClassicEditor}
-                          data={body}
-                          onChange={handleEditorChange}
+                        <input
+                          type="text"
+                          placeholder="https://youtube/..."
+                          className="input input-bordered w-full bg-white text-black mb-10"
+                          value={video}
+                          onChange={(e) => setVideo(e.target.value)}
                         />
                         {isLoading ? (
                           <button className="btn loading mt-3 w-full bg-gray-200 text-black">
@@ -196,4 +146,4 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
   );
 };
 
-export default AddBlog;
+export default AddVideo;

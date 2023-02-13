@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/templates/Header";
 import "./../major/major.css";
-import { Grid, Pagination, Stack } from "@mui/material";
+import { Pagination, Stack } from "@mui/material";
 import Footer from "../footer/Footer";
 import NavbarDaisy from "../navbar/NavbarDaisy";
-import highSchoolApi from "../../../apis/highSchoolApi";
 import ReactHtmlParser from "react-html-parser";
 import {
   Button,
@@ -15,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import dateFormat, { i18n } from "dateformat";
+import useBlogApi from "../../../apis/blogApi";
 
 i18n.monthNames = [
   "Jan",
@@ -44,10 +44,16 @@ i18n.monthNames = [
 ];
 
 const News = () => {
-  const [news, setNews] = useState([]);
+  const { blogs, isLoading, error, getAllBlogs } = useBlogApi();
   const [page, setPage] = useState(1);
-  const [keyword, setSetKeyword] = useState("");
+  const [keyword, setKeyword] = useState("");
   const [item, setItem] = useState("");
+  let lastPage = 1;
+
+  if (blogs != 0) {
+    lastPage = blogs.data.last_page;
+  }
+
   const {
     id,
     title: newTitle,
@@ -68,38 +74,23 @@ const News = () => {
     setCreated_at(newCreated_at);
   }, [newTitle, newImage, newBody, newCreated_at]);
 
-  // Get all data Blogs
-
-  const fetchBlog = async () => {
-    await highSchoolApi
-      .get(`blogallnews`, {
-        params: {
-          page: page,
-          search: keyword,
-        },
-      })
-      .then((response) => {
-        setNews(response.data.data);
-      })
-      .catch((error) => {});
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    getAllBlogs(page, keyword);
   };
-
-  useEffect(() => {
-    fetchBlog();
-  }, [page]);
 
   const handleChangeKeyword = (event) => {
-    setSetKeyword(event.target.value);
-  };
-
-  const handleSubmitSearch = (event) => {
-    event.preventDefault();
-    fetchBlog();
+    setKeyword(event.target.value);
   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    getAllBlogs(newPage, keyword);
   };
+
+  useEffect(() => {
+    getAllBlogs();
+  }, []);
 
   return (
     <>
@@ -109,7 +100,26 @@ const News = () => {
           <div className="row">
             <Header title="Berita" />
             <div className="flex justify-center sm:justify-end mt-10">
-              <form onSubmit={handleSubmitSearch}>
+              <button
+                className="btn mr-5 bg-green-300 hover:bg-green-400 border-none"
+                onClick={() => getAllBlogs()}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                  />
+                </svg>
+              </button>
+              <form onSubmit={handleSearch}>
                 <div className="form-control">
                   <div className="input-group">
                     <input
@@ -140,71 +150,80 @@ const News = () => {
               </form>
             </div>
 
-            <div className="grid grid-cols-1 justify-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-4 mt-16">
-              {news.data?.map((item, index) => {
-                const { id, title, image, body, created_at } = item;
-                const subString = body.substring(0, 50);
-                return (
-                  <Card
-                    sx={{ maxWidth: "100%" }}
-                    key={index}
-                    elevation={6}
-                    className="cursor-pointer"
-                  >
-                    <CardMedia
-                      sx={{ height: 200 }}
-                      image={image}
-                      title={title}
-                      className="bg-gray-200"
-                    />
-                    <CardContent>
-                      <div className="flex justify-end">
+            {!blogs || blogs == 0 ? (
+              <div className="flex justify-center mt-10">
+                <p>Tidak Ada Berita</p>
+              </div>
+            ) : blogs && blogs.data && blogs.data.data.length == 0 ? (
+              <div className="flex justify-center mt-10">
+                <p>Tidak Ada Berita</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 justify-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-4 mt-16">
+                {blogs.data.data.map((item, index) => {
+                  const { id, title, image, body, created_at } = item;
+                  return (
+                    <Card
+                      sx={{ maxWidth: "100%" }}
+                      key={index}
+                      elevation={6}
+                      className="cursor-pointer"
+                    >
+                      <CardMedia
+                        sx={{ height: 200 }}
+                        image={image}
+                        title={title}
+                        className="bg-gray-200"
+                      />
+                      <CardContent>
+                        <div className="flex justify-end">
+                          <Typography
+                            gutterBottom
+                            color="text.secondary"
+                            variant="caption"
+                            component="div"
+                          >
+                            {dateFormat(created_at, "d, mmmm yyyy")}
+                          </Typography>
+                        </div>
                         <Typography
                           gutterBottom
-                          color="text.secondary"
-                          variant="caption"
+                          variant="h6"
                           component="div"
+                          className="line-clamp-1"
+                          sx={{ fontWeight: 600 }}
                         >
-                          {dateFormat(created_at, "d, mmmm yyyy")}
+                          {title}
                         </Typography>
-                      </div>
-                      <Typography
-                        gutterBottom
-                        variant="h6"
-                        component="div"
-                        className="line-clamp-1"
-                        sx={{ fontWeight: 600 }}
-                      >
-                        {title}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        className="line-clamp-2 text-black"
-                        sx={{ mt: 2 }}
-                      >
-                        {ReactHtmlParser(body)}
-                      </Typography>
-                    </CardContent>
-                    <CardActions sx={{ mt: 2 }}>
-                      <Button
-                        size="small"
-                        fullWidth
-                        onClick={() => {
-                          setItem(item);
-                          setShowModal(true);
-                        }}
-                      >
-                        Read More
-                      </Button>
-                    </CardActions>
-                  </Card>
-                );
-              })}
-            </div>
+                        <Typography
+                          variant="body2"
+                          className="line-clamp-2 text-black"
+                          sx={{ mt: 2 }}
+                        >
+                          {ReactHtmlParser(body)}
+                        </Typography>
+                      </CardContent>
+                      <CardActions sx={{ mt: 2 }}>
+                        <button
+                          className="btn bg-sky-900 rounded-lg w-full border-none text-white hover:bg-sky-800 mt-10"
+                          onClick={() => {
+                            setItem(item);
+                            setShowModal(true);
+                          }}
+                        >
+                          Baca Berita
+                        </button>
+                      </CardActions>
+                    </Card>
+                  );
+                })}{" "}
+              </div>
+            )}
+
             <div className="flex justify-center mt-20">
               <Stack spacing={2}>
                 <Pagination
-                  count={news.last_page}
+                  count={lastPage}
                   page={page}
                   onChange={handleChangePage}
                   variant="outlined"
@@ -250,13 +269,14 @@ const News = () => {
 
                 <div className="mt-3 sm:flex">
                   <div className="mt-2 w-full ml-0 mr-0 lg:mr-5 lg:ml-5 md:mr-5 md:ml-5 mb-3">
-                    <div className="flex justify-center">
-                      <img
-                        src={filePreview}
-                        alt="Preview Img"
-                        style={{ marginTop: "10px" }}
-                        className="bg-gray-200 rounded-md"
-                      />
+                    <div className="w-full h-96 overflow-auto">
+                      <div className="flex justify-center">
+                        <img
+                          src={filePreview}
+                          alt="Preview Img"
+                          className="bg-gray-200 rounded-md"
+                        />
+                      </div>
                     </div>
                     <div className="flex justify-center mt-5">
                       <h2 className="font-bold text-gray-800 mb-2 text-lg lg:text-3xl md:text-2xl">

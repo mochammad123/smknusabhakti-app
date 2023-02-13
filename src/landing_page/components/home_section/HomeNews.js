@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import dateFormat, { i18n } from "dateformat";
+import useBlogApi from "../../../apis/blogApi";
 
 i18n.monthNames = [
   "Jan",
@@ -40,7 +41,14 @@ i18n.monthNames = [
 ];
 
 const HomeNews = () => {
+  const { blogs, isLoading, error, getAllBlogs } = useBlogApi();
   const [item, setItem] = useState("");
+  let lastPage = 1;
+
+  if (blogs != 0) {
+    lastPage = blogs.data.last_page;
+  }
+
   const {
     id,
     title: newTitle,
@@ -52,7 +60,6 @@ const HomeNews = () => {
   const [filePreview, setFilePreview] = useState(newImage);
   const [body, setBody] = useState(newBody);
   const [created_at, setCreated_at] = useState(newCreated_at);
-  const [news, setNews] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -62,19 +69,8 @@ const HomeNews = () => {
     setCreated_at(newCreated_at);
   }, [newTitle, newImage, newBody, newCreated_at]);
 
-  // Get all data Blogs
-
-  const fetchBlog = async () => {
-    await highSchoolApi
-      .get(`blogallnews`)
-      .then((response) => {
-        setNews(response.data.data);
-      })
-      .catch((error) => {});
-  };
-
-  useState(() => {
-    fetchBlog();
+  useEffect(() => {
+    getAllBlogs();
   }, []);
 
   return (
@@ -83,67 +79,76 @@ const HomeNews = () => {
         <div className="extraBold font60 title-name">
           <h1>Berita</h1>
         </div>
-        <div className="grid grid-cols-1 justify-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-4">
-          {news.data?.slice(0, 3).map((item, index) => {
-            const { id, title, image, body, created_at } = item;
-            const subString = body.substring(0, 50);
-            return (
-              <Card
-                sx={{ maxWidth: "100%" }}
-                key={index}
-                elevation={6}
-                className="cursor-pointer"
-              >
-                <CardMedia
-                  sx={{ height: 200 }}
-                  image={image}
-                  title={title}
-                  className="bg-gray-200"
-                />
-                <CardContent>
-                  <div className="flex justify-end">
+        {!blogs || blogs == 0 ? (
+          <div className="flex justify-center mt-10">
+            <p>Tidak Ada Berita</p>
+          </div>
+        ) : blogs && blogs.data && blogs.data.data.length == 0 ? (
+          <div className="flex justify-center mt-10">
+            <p>Tidak Ada Berita</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 justify-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-4">
+            {blogs.data.data.slice(0, 3).map((item, index) => {
+              const { id, title, image, body, created_at } = item;
+              return (
+                <Card
+                  sx={{ maxWidth: "100%", marginBottom: 10 }}
+                  key={index}
+                  elevation={6}
+                  className="cursor-pointer"
+                >
+                  <CardMedia
+                    sx={{ height: 200 }}
+                    image={image}
+                    title={title}
+                    className="bg-gray-200"
+                  />
+                  <CardContent>
+                    <div className="flex justify-end">
+                      <Typography
+                        gutterBottom
+                        color="text.secondary"
+                        variant="caption"
+                        component="div"
+                      >
+                        {dateFormat(created_at, "d, mmmm yyyy")}
+                      </Typography>
+                    </div>
                     <Typography
                       gutterBottom
-                      color="text.secondary"
-                      variant="caption"
+                      variant="h6"
                       component="div"
+                      className="line-clamp-1"
+                      sx={{ fontWeight: 600 }}
                     >
-                      {dateFormat(created_at, "d, mmmm yyyy")}
+                      {title}
                     </Typography>
-                  </div>
-                  <Typography
-                    gutterBottom
-                    variant="h6"
-                    component="div"
-                    className="line-clamp-1"
-                    sx={{ fontWeight: 600 }}
-                  >
-                    {title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    className="line-clamp-2 text-black"
-                    sx={{ mt: 2 }}
-                  >
-                    {ReactHtmlParser(body)}
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ mt: 2 }}>
-                  <Button
-                    size="small"
-                    fullWidth
-                    onClick={() => {
-                      setItem(item);
-                      setShowModal(true);
-                    }}
-                  >
-                    Read More
-                  </Button>
-                </CardActions>
-              </Card>
-            );
-          })}
-        </div>
+                    <Typography
+                      variant="body2"
+                      className="line-clamp-2 text-black"
+                      sx={{ mt: 2 }}
+                    >
+                      {ReactHtmlParser(body)}
+                    </Typography>
+                  </CardContent>
+                  <CardActions sx={{ mt: 2 }}>
+                    <button
+                      className="btn bg-sky-900 rounded-lg w-full border-none text-white hover:bg-sky-800 mt-10"
+                      onClick={() => {
+                        setItem(item);
+                        setShowModal(true);
+                      }}
+                    >
+                      Baca Berita
+                    </button>
+                  </CardActions>
+                </Card>
+              );
+            })}
+          </div>
+        )}
+
         {showModal ? (
           <>
             <div className="fixed inset-0 z-50 ">
@@ -177,13 +182,15 @@ const HomeNews = () => {
 
                   <div className="mt-3 sm:flex">
                     <div className="mt-2 w-full ml-0 mr-0 lg:mr-5 lg:ml-5 md:mr-5 md:ml-5 mb-3">
-                      <div className="flex justify-center">
-                        <img
-                          src={filePreview}
-                          alt="Preview Img"
-                          style={{ marginTop: "10px" }}
-                          className="bg-gray-200 rounded-md"
-                        />
+                      <div className="w-full h-96 overflow-auto">
+                        <div className="flex justify-center">
+                          <img
+                            src={filePreview}
+                            alt="Preview Img"
+                            style={{ marginTop: "10px" }}
+                            className="bg-gray-200 rounded-md"
+                          />
+                        </div>
                       </div>
                       <div className="flex justify-center mt-5">
                         <h2 className="font-bold text-gray-800 mb-2 text-lg lg:text-3xl md:text-2xl">

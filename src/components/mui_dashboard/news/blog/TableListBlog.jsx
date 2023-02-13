@@ -10,20 +10,23 @@ import Paper from "@mui/material/Paper";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Swal from "sweetalert2";
+import useBlogApi from "../../../../apis/blogApi";
 
-const TableListBlog = ({ dataBlog, deleteBlogHandler, updateBlogHandler }) => {
+const TableListBlog = () => {
+  const {
+    blogs,
+    isLoading,
+    error,
+    getBlogs,
+    getAllBlogs,
+    deleteBlog,
+    updateBlog,
+  } = useBlogApi();
   const [item, setItem] = useState("");
   const [showModalUpdate, setShowModalUpdate] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const page = dataBlog.current_page;
-  const perPage = dataBlog.per_page;
+  let page = 0;
+  let perPage = 0;
   let paginate = 0;
-
-  if (page * perPage === 10) {
-    paginate = 0;
-  } else {
-    paginate = page * perPage - 10;
-  }
 
   const { id, title: newTitle, image: newImage, body: newBody } = item;
   const [title, setTitle] = useState(newTitle);
@@ -36,7 +39,21 @@ const TableListBlog = ({ dataBlog, deleteBlogHandler, updateBlogHandler }) => {
     setTitle(newTitle);
     setFilePreview(newImage);
     setBody(newBody);
+    if (blogs != 0) {
+      page = blogs.data.current_page;
+      perPage = blogs.data.per_page;
+    }
+    if (page * perPage === 10) {
+      paginate = 0;
+    } else {
+      paginate = page * perPage - 10;
+    }
   }, [newTitle, newImage, newBody]);
+
+  useEffect(() => {
+    getBlogs();
+    getAllBlogs();
+  }, []);
 
   // Handle change image
   const handleImageChange = (event) => {
@@ -58,48 +75,63 @@ const TableListBlog = ({ dataBlog, deleteBlogHandler, updateBlogHandler }) => {
     setBody(editor.getData());
   };
 
+  // update data blog
+  const updateBlogHandler = async (id, title, body, image) => {
+    const filtered = blogs.data.data
+      .filter((blogs) => blogs.id === id)
+      .map((blogs) => ({
+        title: title,
+        body: body,
+        image: image,
+      }));
+
+    await updateBlog(id, filtered[0]).then((response) => {
+      setShowModalUpdate(false);
+      getAllBlogs();
+      getBlogs();
+    });
+  };
+
   const handleEdit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
     if (image) {
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onload = async () => {
         try {
           const base64 = reader.result.split(",")[1];
-          await updateBlogHandler(id, title, body, base64)
-            .then((response) => {
-              setIsLoading(false);
-              setShowModalUpdate(false);
-            })
-            .catch((error) => {
-              Swal.fire({
-                icon: "error",
-                title: "Opss...",
-                text: error.response.data.message,
-              });
-              setIsLoading(false);
-            });
+          await updateBlogHandler(id, title, body, base64);
         } catch (error) {}
       };
     } else {
       try {
-        await updateBlogHandler(id, title, body)
-          .then((response) => {
-            setIsLoading(false);
-            setShowModalUpdate(false);
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Opss...",
-              text: error.response.data.message,
-            });
-            setIsLoading(false);
-          });
+        await updateBlogHandler(id, title, body);
       } catch (error) {}
     }
+  };
+
+  // delete video
+  const deleteBlogHandler = async (id) => {
+    const isConfirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      return result.isConfirmed;
+    });
+
+    if (!isConfirm) {
+      return;
+    }
+
+    await deleteBlog(id).then((response) => {
+      getBlogs();
+      getAllBlogs();
+    });
   };
 
   return (
@@ -129,7 +161,15 @@ const TableListBlog = ({ dataBlog, deleteBlogHandler, updateBlogHandler }) => {
               </TableCell>
             </TableRow>
           </TableHead>
-          {!dataBlog || dataBlog.length === 0 ? (
+          {!blogs || blogs == 0 ? (
+            <TableBody>
+              <TableRow>
+                <TableCell align="center" colSpan={3}>
+                  Data Not Found
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : blogs && blogs.data && blogs.data.data.length === 0 ? (
             <TableBody>
               <TableRow>
                 <TableCell align="center" colSpan={3}>
@@ -139,7 +179,7 @@ const TableListBlog = ({ dataBlog, deleteBlogHandler, updateBlogHandler }) => {
             </TableBody>
           ) : (
             <TableBody>
-              {dataBlog.data?.map((item, index) => {
+              {blogs.data.data.map((item, index) => {
                 const { id, title, image, body } = item;
                 return (
                   <TableRow

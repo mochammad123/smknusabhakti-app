@@ -28,6 +28,7 @@ import "./dashboardlist.css";
 import highSchoolApi from "../../apis/highSchoolApi";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { useEffect } from "react";
 
 const drawerWidth = 240;
 
@@ -101,10 +102,19 @@ const AppDrawer = ({ title }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
   const token = localStorage.getItem("token");
-  const navigate = useNavigate("");
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
   const companyName = localStorage.getItem("company");
   const userName = localStorage.getItem("name");
+
+  useEffect(() => {
+    const { exp } = jwtDecode(token);
+    const expirationTime = exp * 1000 - 60000;
+    if (Date.now() >= expirationTime) {
+      localStorage.clear();
+      navigate("/login");
+    }
+  }, []);
 
   let activeStyle = {
     backgroundColor: "#144272",

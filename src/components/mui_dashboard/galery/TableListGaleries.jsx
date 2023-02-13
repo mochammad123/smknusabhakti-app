@@ -8,24 +8,23 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Swal from "sweetalert2";
+import useGaleryApi from "../../../apis/galeryApi";
 
-const TableListGaleries = ({
-  dataGalery,
-  deleteGaleryHandler,
-  updateGaleryHandler,
-}) => {
+const TableListGaleries = () => {
+  const {
+    galeries,
+    isLoading,
+    error,
+    getGaleries,
+    getAllGaleries,
+    deleteGalery,
+    updateGalery,
+  } = useGaleryApi();
   const [item, setItem] = useState("");
   const [showModalUpdate, setShowModalUpdate] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const page = dataGalery.current_page;
-  const perPage = dataGalery.per_page;
+  let page = 0;
+  let perPage = 0;
   let paginate = 0;
-
-  if (page * perPage === 10) {
-    paginate = 0;
-  } else {
-    paginate = page * perPage - 10;
-  }
 
   const { id, title: newTitle, image: newImage } = item;
   const [title, setTitle] = useState(newTitle);
@@ -36,7 +35,23 @@ const TableListGaleries = ({
   useEffect(() => {
     setTitle(newTitle);
     setFilePreview(newImage);
+
+    if (galeries != 0) {
+      page = galeries.data.current_page;
+      perPage = galeries.data.per_page;
+    }
+
+    if (page * perPage === 10) {
+      paginate = 0;
+    } else {
+      paginate = page * perPage - 10;
+    }
   }, [newTitle, newImage]);
+
+  useEffect(() => {
+    getGaleries();
+    getAllGaleries();
+  }, []);
 
   // Handle change image
   const handleImageChange = (event) => {
@@ -53,48 +68,62 @@ const TableListGaleries = ({
     setPreview("");
   };
 
+  // update data blog
+  const updateGaleryHandler = async (id, title, image) => {
+    const filtered = galeries.data.data
+      .filter((galeries) => galeries.id === id)
+      .map((galeries) => ({
+        title: title,
+        image: image,
+      }));
+
+    await updateGalery(id, filtered[0]).then((response) => {
+      setShowModalUpdate(false);
+      getAllGaleries();
+      getGaleries();
+    });
+  };
+
   const handleEdit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
     if (image) {
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onload = async () => {
         try {
           const base64 = reader.result.split(",")[1];
-          await updateGaleryHandler(id, title, base64)
-            .then((response) => {
-              setIsLoading(false);
-              setShowModalUpdate(false);
-            })
-            .catch((error) => {
-              Swal.fire({
-                icon: "error",
-                title: "Opss...",
-                text: error.response.data.message,
-              });
-              setIsLoading(false);
-            });
+          await updateGaleryHandler(id, title, base64);
         } catch (error) {}
       };
     } else {
       try {
-        await updateGaleryHandler(id, title)
-          .then((response) => {
-            setIsLoading(false);
-            setShowModalUpdate(false);
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Opss...",
-              text: error.response.data.message,
-            });
-            setIsLoading(false);
-          });
+        await updateGaleryHandler(id, title);
       } catch (error) {}
     }
+  };
+
+  // delete video
+  const deleteGaleryHandler = async (id) => {
+    const isConfirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      return result.isConfirmed;
+    });
+
+    if (!isConfirm) {
+      return;
+    }
+
+    await deleteGalery(id).then((response) => {
+      getGaleries();
+      getAllGaleries();
+    });
   };
 
   return (
@@ -124,7 +153,15 @@ const TableListGaleries = ({
               </TableCell>
             </TableRow>
           </TableHead>
-          {!dataGalery || dataGalery.length === 0 ? (
+          {!galeries || galeries == 0 ? (
+            <TableBody>
+              <TableRow>
+                <TableCell align="center" colSpan={3}>
+                  Data Not Found
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ) : galeries && galeries.data && galeries.data.length === 0 ? (
             <TableBody>
               <TableRow>
                 <TableCell align="center" colSpan={3}>
@@ -134,7 +171,7 @@ const TableListGaleries = ({
             </TableBody>
           ) : (
             <TableBody>
-              {dataGalery.data?.map((item, index) => {
+              {galeries.data.data.map((item, index) => {
                 const { id, title } = item;
                 return (
                   <TableRow

@@ -18,8 +18,29 @@ import Dashboard from "./components/mui_dashboard/Dashboard";
 import Blog from "./components/mui_dashboard/news/blog/Blog";
 import Video from "./components/mui_dashboard/news/video/Video";
 import Galeries from "./components/mui_dashboard/galery/Galeries";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const App = () => {
+  const [isLoading, setLoading] = useState(true);
+
+  function fakeRequest() {
+    return new Promise((resolve) => setTimeout(() => resolve(), 1500));
+  }
+
+  useEffect(() => {
+    fakeRequest().then(() => {
+      const el = document.querySelector(".loader-container");
+      if (el) {
+        el.remove();
+        setLoading(!isLoading);
+      }
+    });
+  }, []);
+
+  if (isLoading) {
+    return null;
+  }
   return (
     <>
       <BrowserRouter basename="/">

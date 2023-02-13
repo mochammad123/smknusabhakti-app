@@ -1,50 +1,40 @@
 import React, { useState } from "react";
-import Header from "../../components/templates/Header";
+import Header from "../templates/Header";
 import "./../major/major.css";
-import newsData from "./../data/newsvideo.json";
-import { Grid, Pagination, Stack } from "@mui/material";
+import { Pagination, Stack } from "@mui/material";
 import VideoPlay from "../templates/VideoPlay";
 import Footer from "../footer/Footer";
 import NavbarDaisy from "../navbar/NavbarDaisy";
-import highSchoolApi from "../../../apis/highSchoolApi";
 import { useEffect } from "react";
+import useVideoApi from "../../../apis/videoApi";
 
 const NewsVideo = () => {
-  const [news, setNews] = useState([]);
+  const { videos, isLoading, error, getAllVideos } = useVideoApi();
   const [page, setPage] = useState(1);
-  const [keyword, setSetKeyword] = useState("");
+  const [keyword, setKeyword] = useState("");
+  let lastPage = 1;
 
-  // Get all data Blogs
-  const fetchVideo = async () => {
-    await highSchoolApi
-      .get(`videoallnews`, {
-        params: {
-          page: page,
-          search: keyword,
-        },
-      })
-      .then((response) => {
-        setNews(response.data.data);
-      })
-      .catch((error) => {});
+  if (videos != 0) {
+    lastPage = videos.data.last_page;
+  }
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    getAllVideos(page, keyword);
   };
-
-  useEffect(() => {
-    fetchVideo();
-  }, [page]);
 
   const handleChangeKeyword = (event) => {
-    setSetKeyword(event.target.value);
-  };
-
-  const handleSubmitSearch = (event) => {
-    event.preventDefault();
-    fetchVideo();
+    setKeyword(event.target.value);
   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    getAllVideos(newPage, keyword);
   };
+
+  useEffect(() => {
+    getAllVideos();
+  }, []);
 
   return (
     <>
@@ -55,7 +45,26 @@ const NewsVideo = () => {
             <Header title="Berita Video" />
 
             <div className="flex justify-center sm:justify-end mt-10">
-              <form onSubmit={handleSubmitSearch}>
+              <button
+                className="btn mr-5 bg-green-300 hover:bg-green-400 border-none"
+                onClick={() => getAllVideos()}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                  />
+                </svg>
+              </button>
+              <form onSubmit={handleSearch}>
                 <div className="form-control">
                   <div className="input-group">
                     <input
@@ -65,7 +74,7 @@ const NewsVideo = () => {
                       value={keyword}
                       onChange={handleChangeKeyword}
                     />
-                    <button className="btn btn-square bg-sky-800 border-none">
+                    <button className="btn btn-square bg-sky-800 hover:bg-sky-900 border-none">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6 text-white"
@@ -85,16 +94,25 @@ const NewsVideo = () => {
                 </div>
               </form>
             </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-4 mt-5">
-              {news.data?.map((item, index) => (
-                <VideoPlay key={index} data={item} />
-              ))}
-            </div>
+            {!videos || videos == 0 ? (
+              <div className="flex justify-center mt-10">
+                <p>Tidak Ada Berita Video</p>
+              </div>
+            ) : videos && videos.data && videos.data.data.length == 0 ? (
+              <div className="flex justify-center mt-10">
+                <p>Tidak Ada Berita Video</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-4 mt-5">
+                {videos.data.data.map((item, index) => {
+                  return <VideoPlay key={index} data={item} />;
+                })}
+              </div>
+            )}
             <div className="flex justify-center mt-20">
               <Stack spacing={2}>
                 <Pagination
-                  count={news.last_page}
+                  count={lastPage}
                   page={page}
                   onChange={handleChangePage}
                   variant="outlined"

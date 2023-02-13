@@ -1,15 +1,21 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { Typography } from "@mui/material";
-import useBlogApi from "../../../../apis/blogApi";
 
-const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
-  const { isLoading, error, getBlogs, getAllBlogs, createBlog } = useBlogApi();
+const AddBlog = ({
+  addBlogHandler,
+  keyword,
+  handleChangeKeyword,
+  handleSubmitSearch,
+}) => {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [body, setBody] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [validation, setValidation] = useState([]);
   const [preview, setPreview] = useState("");
 
   const handleImageChange = (event) => {
@@ -22,8 +28,9 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
     setBody(editor.getData());
   };
 
-  const handleCreate = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
     const reader = new FileReader();
     if (image) {
@@ -31,32 +38,44 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
       reader.onload = async () => {
         try {
           const base64 = reader.result.split(",")[1];
-          await createBlog({ title: title, image: base64, body: body }).then(
-            (response) => {
+          await addBlogHandler({ title: title, image: base64, body: body })
+            .then((response) => {
               setTitle("");
               setImage(null);
               setPreview("");
               setBody("");
+              setIsLoading(false);
               setShowModal(false);
-              getAllBlogs();
-              getBlogs();
-            }
-          );
+            })
+            .catch((error) => {
+              Swal.fire({
+                icon: "error",
+                title: "Opss...",
+                text: error.response.data.message,
+              });
+              setIsLoading(false);
+            });
         } catch (error) {}
       };
     } else {
       try {
-        await createBlog({ title: title, image: null, body: body }).then(
-          (response) => {
+        await addBlogHandler({ title: title, image: null, body: body })
+          .then((response) => {
             setTitle("");
             setImage(null);
             setPreview("");
             setBody("");
+            setIsLoading(false);
             setShowModal(false);
-            getAllBlogs();
-            getBlogs();
-          }
-        );
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Opss...",
+              text: error.response.data.message,
+            });
+            setIsLoading(false);
+          });
       } catch (error) {}
     }
   };
@@ -117,7 +136,7 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
                         Create Blog
                       </h4>
                       <hr className="mb-8" />
-                      <form onSubmit={handleCreate}>
+                      <form onSubmit={handleSubmit}>
                         <p className="mt-2 mb-5 text-[15px] leading-relaxed text-gray-500">
                           Title
                         </p>

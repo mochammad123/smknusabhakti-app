@@ -1,49 +1,40 @@
 import React, { useEffect, useState } from "react";
 import Header from "../templates/Header";
 import "./../major/major.css";
-import newsData from "../data/galery.json";
 import { Grid, Pagination, Stack } from "@mui/material";
 import CardGalery from "../templates/CardGalery";
 import Footer from "../footer/Footer";
 import NavbarDaisy from "../navbar/NavbarDaisy";
-import highSchoolApi from "../../../apis/highSchoolApi";
+import useGaleryApi from "../../../apis/galeryApi";
 
 const Galery = () => {
-  const [galeries, setGaleries] = useState([]);
+  const { galeries, isLoading, error, getAllGaleries } = useGaleryApi();
   const [page, setPage] = useState(1);
-  const [keyword, setSetKeyword] = useState("");
+  const [keyword, setKeyword] = useState("");
+  let lastPage = 1;
 
-  // Get all data Galery
-  const fetchGalery = async () => {
-    await highSchoolApi
-      .get(`galeryallnews`, {
-        params: {
-          page: page,
-          search: keyword,
-        },
-      })
-      .then((response) => {
-        setGaleries(response.data.data);
-      })
-      .catch((error) => {});
+  if (galeries != 0) {
+    lastPage = galeries.data.last_page;
+  }
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    getAllGaleries(page, keyword);
   };
-
-  useEffect(() => {
-    fetchGalery();
-  }, [page]);
 
   const handleChangeKeyword = (event) => {
-    setSetKeyword(event.target.value);
-  };
-
-  const handleSubmitSearch = (event) => {
-    event.preventDefault();
-    fetchGalery();
+    setKeyword(event.target.value);
   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    getAllGaleries(newPage, keyword);
   };
+
+  useEffect(() => {
+    getAllGaleries();
+  }, []);
+
   return (
     <>
       <NavbarDaisy />
@@ -53,7 +44,26 @@ const Galery = () => {
             <Header title="Galeri" />
 
             <div className="flex justify-center sm:justify-end mt-10">
-              <form onSubmit={handleSubmitSearch}>
+              <button
+                className="btn mr-5 bg-green-300 hover:bg-green-400 border-none"
+                onClick={() => getAllGaleries()}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                  />
+                </svg>
+              </button>
+              <form onSubmit={handleSearch}>
                 <div className="form-control">
                   <div className="input-group">
                     <input
@@ -84,18 +94,28 @@ const Galery = () => {
               </form>
             </div>
 
-            <Grid container mt={4} direction="row" spacing={2}>
-              {galeries.data?.map((galery, index) => (
-                <Grid item xs={12} md={4}>
-                  <CardGalery key={index} data={galery} />
-                </Grid>
-              ))}
-            </Grid>
+            {!galeries || galeries == 0 ? (
+              <div className="flex justify-center mt-10">
+                <p>Tidak Ada Galeri</p>
+              </div>
+            ) : galeries && galeries.data && galeries.data.data.length == 0 ? (
+              <div className="flex justify-center mt-10">
+                <p>Tidak Ada Galeri</p>
+              </div>
+            ) : (
+              <Grid container mt={4} direction="row" spacing={2}>
+                {galeries.data.data.map((galery, index) => (
+                  <Grid item xs={12} md={4}>
+                    <CardGalery key={index} data={galery} />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
 
             <div className="flex justify-center mt-20">
               <Stack spacing={2}>
                 <Pagination
-                  count={galeries.last_page}
+                  count={lastPage}
                   page={page}
                   onChange={handleChangePage}
                   variant="outlined"

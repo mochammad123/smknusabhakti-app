@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { Typography } from "@mui/material";
+import useGaleryApi from "../../../apis/galeryApi";
 
-const AddGalery = ({
-  addGaleryHandler,
-  keyword,
-  handleChangeKeyword,
-  handleSubmitSearch,
-}) => {
+const AddGalery = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
+  const { isLoading, error, getGaleries, getAllGaleries, createGalery } =
+    useGaleryApi();
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [validation, setValidation] = useState([]);
   const [preview, setPreview] = useState("");
 
   const handleImageChange = (event) => {
@@ -21,9 +17,8 @@ const AddGalery = ({
     setPreview(URL.createObjectURL(file));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleCreate = async (event) => {
+    event.preventDefault();
 
     const reader = new FileReader();
     if (image) {
@@ -31,42 +26,28 @@ const AddGalery = ({
       reader.onload = async () => {
         try {
           const base64 = reader.result.split(",")[1];
-          await addGaleryHandler({ title: title, image: base64 })
-            .then((response) => {
+          await createGalery({ title: title, image: base64 }).then(
+            (response) => {
               setTitle("");
               setImage(null);
               setPreview("");
-              setIsLoading(false);
               setShowModal(false);
-            })
-            .catch((error) => {
-              Swal.fire({
-                icon: "error",
-                title: "Opss...",
-                text: error.response.data.message,
-              });
-              setIsLoading(false);
-            });
+              getAllGaleries();
+              getGaleries();
+            }
+          );
         } catch (error) {}
       };
     } else {
       try {
-        await addGaleryHandler({ title: title, image: null })
-          .then((response) => {
-            setTitle("");
-            setImage(null);
-            setPreview("");
-            setIsLoading(false);
-            setShowModal(false);
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Opss...",
-              text: error.response.data.message,
-            });
-            setIsLoading(false);
-          });
+        await createGalery({ title: title, image: null }).then((response) => {
+          setTitle("");
+          setImage(null);
+          setPreview("");
+          setShowModal(false);
+          getAllGaleries();
+          getGaleries();
+        });
       } catch (error) {}
     }
   };
@@ -127,7 +108,7 @@ const AddGalery = ({
                         Create Galery
                       </h4>
                       <hr className="mb-8" />
-                      <form onSubmit={handleSubmit}>
+                      <form onSubmit={handleCreate}>
                         <p className="mt-2 mb-5 text-[15px] leading-relaxed text-gray-500">
                           Title
                         </p>

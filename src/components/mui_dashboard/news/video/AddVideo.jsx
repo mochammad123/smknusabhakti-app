@@ -1,49 +1,36 @@
-import React, { useState } from "react";
-import Swal from "sweetalert2";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import useVideoApi from "../../../../apis/videoApi";
 
-const AddVideo = ({
-  addVideoHandler,
-  keyword,
-  handleChangeKeyword,
-  handleSubmitSearch,
-}) => {
+const AddVideo = ({ keyword, handleChangeKeyword, handleSearch }) => {
+  const { isLoading, error, getVideos, getAllVideos, createVideo } =
+    useVideoApi();
   const [title, setTitle] = useState("");
   const [video, setVideo] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [validation, setValidation] = useState([]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      await addVideoHandler({ title: title, video: video })
-        .then((response) => {
-          setTitle("");
-          setVideo("");
-          setIsLoading(false);
-          setShowModal(false);
-        })
-        .catch((error) => {
-          Swal.fire({
-            icon: "error",
-            title: "Opss...",
-            text: error.response.data.message,
-          });
-          setIsLoading(false);
-        });
-    } catch (error) {}
+  const handleCreate = async (event) => {
+    event.preventDefault();
+    await createVideo({ title, video })
+      .then((response) => {
+        setTitle("");
+        setVideo("");
+        setShowModal(false);
+        getAllVideos();
+        getVideos();
+      })
+      .catch((error) => {});
   };
+
+  useEffect(() => {
+    getVideos();
+    getAllVideos();
+  }, []);
 
   return (
     <div className="flex justify-end px-4">
       <div className="w-1/3">
         <div className="relative mx-auto text-gray-600 mr-10">
-          <form onSubmit={handleSubmitSearch}>
+          <form onSubmit={handleSearch}>
             <input
               className="input input-bordered input-info input-md border-2 border-sky-500 w-full bg-white px-5 pr-16 rounded-lg text-sm"
               type="search"
@@ -95,7 +82,7 @@ const AddVideo = ({
                         Create Blog
                       </h4>
                       <hr className="mb-8" />
-                      <form onSubmit={handleSubmit}>
+                      <form onSubmit={handleCreate}>
                         <p className="mt-2 mb-5 text-[15px] leading-relaxed text-gray-500">
                           Title
                         </p>

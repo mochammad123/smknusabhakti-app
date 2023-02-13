@@ -1,136 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { Container, Grid, Pagination, Toolbar } from "@mui/material";
-import Swal from "sweetalert2";
-import highSchoolApi from "../../../../apis/highSchoolApi";
 import AddVideo from "./AddVideo";
 import TabelListVideo from "./TabelListVideo";
+import useVideoApi from "../../../../apis/videoApi";
+import NewsVideo from "../../../../landing_page/components/news/NewsVideo";
 
 const MainVideo = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [validation, setValidation] = useState([]);
-  const [dataVideo, setDataVideo] = useState([]);
+  const { videos, isLoading, error, getVideos, getAllVideos } = useVideoApi();
   const [page, setPage] = useState(1);
-  const [keyword, setSetKeyword] = useState("");
+  const [keyword, setKeyword] = useState("");
+  let lastPage = 1;
 
-  const token = localStorage.getItem("token");
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "bottom-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener("mouseenter", Swal.stopTimer);
-      toast.addEventListener("mouseleave", Swal.resumeTimer);
-    },
-  });
+  if (videos != 0) {
+    lastPage = videos.data.last_page;
+  }
 
-  useEffect(() => {
-    fetchVideo();
-  }, [page]);
-
-  // Get all data Videos
-  const fetchVideo = async () => {
-    setIsLoading(true);
-    await highSchoolApi
-      .get(`videonew`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          page: page,
-          search: keyword,
-        },
-      })
-      .then((response) => {
-        setDataVideo(response.data.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setValidation(error);
-      });
-  };
-
-  //   Add data video
-  const addVideoHandler = async (dataVideo) => {
-    await highSchoolApi
-      .post("videonews", dataVideo, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        Toast.fire({
-          icon: "success",
-          title: `${response.data.data.title} added successfully`,
-        });
-        fetchVideo();
-      });
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    getVideos(page, keyword);
   };
 
   const handleChangeKeyword = (event) => {
-    setSetKeyword(event.target.value);
-  };
-
-  const handleSubmitSearch = (event) => {
-    event.preventDefault();
-    fetchVideo();
+    setKeyword(event.target.value);
   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    getVideos(newPage, keyword);
   };
 
-  // Delete Data Blog
-  const deleteVideoHandler = async (id) => {
-    const isConfirm = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      return result.isConfirmed;
-    });
-
-    if (!isConfirm) {
-      return;
-    }
-
-    await highSchoolApi
-      .delete(`videonews/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        fetchVideo();
-        Toast.fire({
-          icon: "success",
-          title: `${response.data.data.title} success deleted!`,
-        });
-      });
-  };
-
-  // update data blog
-  const updateVideoHandler = async (id, title, video) => {
-    const filtered = dataVideo.data
-      .filter((videos) => videos.id === id)
-      .map((videos) => ({
-        title: title,
-        video: video,
-      }));
-
-    await highSchoolApi
-      .post(`videonews/${id}`, filtered[0], {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        Toast.fire({
-          icon: "success",
-          title: `${response.data.data.title} added successfully`,
-        });
-        fetchVideo();
-      });
-  };
+  useEffect(() => {
+    getVideos();
+    getAllVideos();
+  }, []);
 
   return (
     <>
@@ -139,23 +41,18 @@ const MainVideo = () => {
       <Container maxWidth="xl" sx={{ mt: 4, mb: 10 }}>
         <div className="mt-16">
           <AddVideo
-            addVideoHandler={addVideoHandler}
-            handleSubmitSearch={handleSubmitSearch}
+            handleSearch={handleSearch}
             keyword={keyword}
             handleChangeKeyword={handleChangeKeyword}
           />
         </div>
         <Grid container>
-          <TabelListVideo
-            dataVideo={dataVideo}
-            deleteVideoHandler={deleteVideoHandler}
-            updateVideoHandler={updateVideoHandler}
-          />
+          <TabelListVideo />
         </Grid>
         <div className="flex justify-center px-4">
           <Pagination
             sx={{ mt: 2 }}
-            count={dataVideo.last_page}
+            count={lastPage}
             page={page}
             onChange={handleChangePage}
             showFirstButton

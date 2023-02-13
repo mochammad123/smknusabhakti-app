@@ -32,7 +32,7 @@ const VideoPlay = ({ data }) => {
                   setShowModal(true);
                 }}
               >
-                Watching
+                Watch
               </button>
             </div>
           </div>

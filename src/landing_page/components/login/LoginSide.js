@@ -13,17 +13,17 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./login.css";
 import {
-  Alert,
   FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Navigate, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+
+import Background from "../../assets/images/background-1.png";
 import highSchoolApi from "../../../apis/highSchoolApi";
 
 const theme = createTheme();
@@ -103,7 +103,7 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundImage: `url(${Background})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"

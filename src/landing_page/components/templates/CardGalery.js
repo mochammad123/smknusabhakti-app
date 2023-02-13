@@ -47,7 +47,6 @@ const CardGalery = ({ data }) => {
     setTitles(title);
     setImages(image);
   }, [title, image]);
-  console.log(images);
 
   return (
     <>
@@ -80,16 +79,15 @@ const CardGalery = ({ data }) => {
           </Typography>
         </CardContent>
         <CardActions sx={{ mt: 2 }}>
-          <Button
-            size="small"
-            fullWidth
+          <button
+            className="btn bg-sky-900 rounded-lg w-full border-none text-white hover:bg-sky-800 mt-10"
             onClick={() => {
               setItem(item);
               setShowModal(true);
             }}
           >
-            Read More
-          </Button>
+            Lihat
+          </button>
         </CardActions>
       </Card>
       {showModal ? (

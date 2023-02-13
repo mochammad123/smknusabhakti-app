@@ -16,15 +16,15 @@ const Toast = Swal.mixin({
   },
 });
 
-const useVideoApi = create((set) => ({
-  videos: [],
+const useGaleryApi = create((set) => ({
+  galeries: [],
   isLoading: false,
   error: null,
 
-  getVideos: async (page, keyword) => {
+  getGaleries: async (page, keyword) => {
     set({ isLoading: true });
     try {
-      const response = await highSchoolApi.get(`videonew`, {
+      const response = await highSchoolApi.get(`galeries`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -33,36 +33,32 @@ const useVideoApi = create((set) => ({
           search: keyword,
         },
       });
-      set({ videos: response.data, isLoading: false });
+      set({ galeries: response.data, isLoading: false });
     } catch (error) {
       set({ error: error, isLoading: false });
     }
   },
 
-  getAllVideos: async (page, keyword) => {
+  getAllGaleries: async (page, keyword) => {
     set({ isLoading: true });
     try {
-      const response = await highSchoolApi.get(`videoallnews`, {
+      const response = await highSchoolApi.get(`galeryallnews`, {
         params: {
           page: page,
           search: keyword,
         },
       });
-      set({ videos: response.data, isLoading: false });
+      set({ galeries: response.data, isLoading: false });
     } catch (error) {
       set({ error: error, isLoading: false });
     }
   },
-  createVideo: async (videoData) => {
+  createGalery: async (galeryData) => {
     set({ isLoading: true });
     try {
-      const response = await highSchoolApi.post("videonews", videoData, {
+      const response = await highSchoolApi.post("galery", galeryData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      // set((state) => ({
-      //   videos: [...state.videos, response.data],
-      //   isLoading: false,
-      // }));
       set({ isLoading: false });
       Toast.fire({
         icon: "success",
@@ -77,24 +73,18 @@ const useVideoApi = create((set) => ({
       });
     }
   },
-  updateVideo: async (videoId, videoData) => {
+  updateGalery: async (galeryId, galeryData) => {
     set({ isLoading: true });
     try {
       const response = await highSchoolApi.post(
-        `videonews/${videoId}`,
-        videoData,
+        `galery/${galeryId}`,
+        galeryData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      // set((state) => ({
-      //   videos: state.videos.map((video) =>
-      //     video.id === videoId ? { ...video, ...response.data } : video
-      //   ),
-      //   isLoading: false,
-      // }));
       set({ isLoading: false });
       Toast.fire({
         icon: "success",
@@ -109,18 +99,14 @@ const useVideoApi = create((set) => ({
       });
     }
   },
-  deleteVideo: async (videoId) => {
+  deleteGalery: async (galeryId) => {
     set({ isLoading: true });
     try {
-      const response = await highSchoolApi.delete(`videonews/${videoId}`, {
+      const response = await highSchoolApi.delete(`galery/${galeryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      // set((state) => ({
-      //   videos: state.videos.filter((video) => video.id !== videoId),
-      //   isLoading: false,
-      // }));
       set({ isLoading: false });
       Toast.fire({
         icon: "success",
@@ -137,4 +123,4 @@ const useVideoApi = create((set) => ({
   },
 }));
 
-export default useVideoApi;
+export default useGaleryApi;

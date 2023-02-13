@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,98 +8,93 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Swal from "sweetalert2";
-import useVideoApi from "../../../../apis/videoApi";
 
-const TabelListVideo = () => {
-  const {
-    videos,
-    isLoading,
-    error,
-    getVideos,
-    getAllVideos,
-    deleteVideo,
-    updateVideo,
-  } = useVideoApi();
+const TableListGaleries = ({
+  dataGalery,
+  deleteGaleryHandler,
+  updateGaleryHandler,
+}) => {
   const [item, setItem] = useState("");
   const [showModalUpdate, setShowModalUpdate] = useState(false);
-  let page = 0;
-  let perPage = 0;
+  const [isLoading, setIsLoading] = useState(false);
+  const page = dataGalery.current_page;
+  const perPage = dataGalery.per_page;
   let paginate = 0;
 
-  const { id, title: newTitle, video: newVideo } = item;
+  if (page * perPage === 10) {
+    paginate = 0;
+  } else {
+    paginate = page * perPage - 10;
+  }
+
+  const { id, title: newTitle, image: newImage } = item;
   const [title, setTitle] = useState(newTitle);
-  const [video, setVideo] = useState(newVideo);
+  const [image, setImage] = useState("");
+  const [preview, setPreview] = useState("");
+  const [filePreview, setFilePreview] = useState(newImage);
 
   useEffect(() => {
     setTitle(newTitle);
-    setVideo(newVideo);
-    if (videos != 0) {
-      page = videos.data.current_page;
-      perPage = videos.data.per_page;
-    }
+    setFilePreview(newImage);
+  }, [newTitle, newImage]);
 
-    if (page * perPage === 10) {
-      paginate = 0;
-    } else {
-      paginate = page * perPage - 10;
-    }
-  }, [newTitle, newVideo]);
-
-  useEffect(() => {
-    getVideos();
-    getAllVideos();
-  }, []);
+  // Handle change image
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  };
 
   // close modal
   const handleCloseChange = (event) => {
     setShowModalUpdate(false);
     setTitle(newTitle);
-    setVideo(newVideo);
-  };
-
-  // update data blog
-  const updateVideoHandler = async (id, title, video) => {
-    const filtered = videos.data.data
-      .filter((videos) => videos.id === id)
-      .map((videos) => ({
-        title: title,
-        video: video,
-      }));
-
-    await updateVideo(id, filtered[0]).then((response) => {
-      setShowModalUpdate(false);
-      getAllVideos();
-      getVideos();
-    });
+    setImage("");
+    setPreview("");
   };
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    await updateVideoHandler(id, title, video);
-  };
+    setIsLoading(true);
 
-  // delete video
-  const deleteVideoHandler = async (id) => {
-    const isConfirm = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      return result.isConfirmed;
-    });
-
-    if (!isConfirm) {
-      return;
+    if (image) {
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = async () => {
+        try {
+          const base64 = reader.result.split(",")[1];
+          await updateGaleryHandler(id, title, base64)
+            .then((response) => {
+              setIsLoading(false);
+              setShowModalUpdate(false);
+            })
+            .catch((error) => {
+              Swal.fire({
+                icon: "error",
+                title: "Opss...",
+                text: error.response.data.message,
+              });
+              setIsLoading(false);
+            });
+        } catch (error) {}
+      };
+    } else {
+      try {
+        await updateGaleryHandler(id, title)
+          .then((response) => {
+            setIsLoading(false);
+            setShowModalUpdate(false);
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Opss...",
+              text: error.response.data.message,
+            });
+            setIsLoading(false);
+          });
+      } catch (error) {}
     }
-
-    await deleteVideo(id).then((response) => {
-      getVideos();
-      getAllVideos();
-    });
   };
 
   return (
@@ -129,7 +124,7 @@ const TabelListVideo = () => {
               </TableCell>
             </TableRow>
           </TableHead>
-          {!videos || videos == 0 ? (
+          {!dataGalery ? (
             <TableBody>
               <TableRow>
                 <TableCell align="center" colSpan={3}>
@@ -137,7 +132,7 @@ const TabelListVideo = () => {
                 </TableCell>
               </TableRow>
             </TableBody>
-          ) : videos && videos.data && videos.data.data.length === 0 ? (
+          ) : dataGalery && dataGalery.data && dataGalery.data.length === 0 ? (
             <TableBody>
               <TableRow>
                 <TableCell align="center" colSpan={3}>
@@ -147,7 +142,7 @@ const TabelListVideo = () => {
             </TableBody>
           ) : (
             <TableBody>
-              {videos.data.data?.map((item, index) => {
+              {dataGalery.data?.map((item, index) => {
                 const { id, title } = item;
                 return (
                   <TableRow
@@ -186,7 +181,7 @@ const TabelListVideo = () => {
                       <button
                         className="btn btn-sm text-xs text-white rounded-full drop-shadow-2xl bg-red-400 border-none hover:bg-red-500"
                         type="button"
-                        onClick={() => deleteVideoHandler(item.id)}
+                        onClick={() => deleteGaleryHandler(item.id)}
                       >
                         Delete
                       </button>
@@ -210,29 +205,63 @@ const TabelListVideo = () => {
                 <div className="mt-3 sm:flex">
                   <div className="mt-2 text-center sm:text-left w-full">
                     <h4 className="text-lg font-medium text-gray-800 mb-5">
-                      Update Video
+                      Update Galery
                     </h4>
                     <hr className="mb-8" />
                     <form onSubmit={handleEdit}>
                       <p className="mt-2 mb-5 text-[15px] leading-relaxed text-gray-500">
-                        title
+                        Title
                       </p>
                       <input
                         type="text"
-                        placeholder="Title"
+                        placeholder="Category Name"
                         className="input input-bordered w-full bg-white text-black mb-10"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                       />
-                      <p className="mt-2 mb-5 text-[15px] leading-relaxed text-gray-500">
-                        Link Video
+                      <p className="mt-2 mb-2 text-[15px] leading-relaxed text-gray-500">
+                        Image
                       </p>
+                      {preview ? (
+                        <>
+                          <div className="flex justify-center">
+                            <img
+                              src={preview}
+                              alt="Preview Img"
+                              style={{ width: 100, marginTop: "10px" }}
+                              className="bg-gray-200 rounded-md"
+                            />
+                          </div>
+                          <div className="flex justify-center">
+                            <Typography sx={{ marginBottom: "10px" }}>
+                              Preview
+                            </Typography>
+                          </div>
+                        </>
+                      ) : filePreview ? (
+                        <>
+                          <div className="flex justify-center">
+                            <img
+                              src={filePreview}
+                              alt="Preview Img"
+                              style={{ width: 100, marginTop: "10px" }}
+                              className="bg-gray-200 rounded-md"
+                            />
+                          </div>
+                          <div className="flex justify-center">
+                            <Typography sx={{ marginBottom: "10px" }}>
+                              Preview
+                            </Typography>
+                          </div>
+                        </>
+                      ) : (
+                        ""
+                      )}
                       <input
-                        type="text"
-                        placeholder="https://youtube/..."
-                        className="input input-bordered w-full bg-white text-black mb-10"
-                        value={video}
-                        onChange={(e) => setVideo(e.target.value)}
+                        type="file"
+                        accept="image/*"
+                        className="file-input file-input-bordered border-gray-400 file-input-md bg-white w-full hover:border-black"
+                        onChange={handleImageChange}
                       />
                       {isLoading ? (
                         <button className="btn loading mt-3 w-full bg-gray-200 text-black">
@@ -263,4 +292,4 @@ const TabelListVideo = () => {
   );
 };
 
-export default TabelListVideo;
+export default TableListGaleries;

@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import Swal from "sweetalert2";
 import { Typography } from "@mui/material";
-import useBlogApi from "../../../../apis/blogApi";
 
-const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
-  const { isLoading, error, getBlogs, getAllBlogs, createBlog } = useBlogApi();
+const AddGalery = ({
+  addGaleryHandler,
+  keyword,
+  handleChangeKeyword,
+  handleSubmitSearch,
+}) => {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
-  const [body, setBody] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [validation, setValidation] = useState([]);
   const [preview, setPreview] = useState("");
 
   const handleImageChange = (event) => {
@@ -18,12 +21,9 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
     setPreview(URL.createObjectURL(file));
   };
 
-  const handleEditorChange = (event, editor) => {
-    setBody(editor.getData());
-  };
-
-  const handleCreate = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
     const reader = new FileReader();
     if (image) {
@@ -31,32 +31,42 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
       reader.onload = async () => {
         try {
           const base64 = reader.result.split(",")[1];
-          await createBlog({ title: title, image: base64, body: body }).then(
-            (response) => {
+          await addGaleryHandler({ title: title, image: base64 })
+            .then((response) => {
               setTitle("");
               setImage(null);
               setPreview("");
-              setBody("");
+              setIsLoading(false);
               setShowModal(false);
-              getAllBlogs();
-              getBlogs();
-            }
-          );
+            })
+            .catch((error) => {
+              Swal.fire({
+                icon: "error",
+                title: "Opss...",
+                text: error.response.data.message,
+              });
+              setIsLoading(false);
+            });
         } catch (error) {}
       };
     } else {
       try {
-        await createBlog({ title: title, image: null, body: body }).then(
-          (response) => {
+        await addGaleryHandler({ title: title, image: null })
+          .then((response) => {
             setTitle("");
             setImage(null);
             setPreview("");
-            setBody("");
+            setIsLoading(false);
             setShowModal(false);
-            getAllBlogs();
-            getBlogs();
-          }
-        );
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Opss...",
+              text: error.response.data.message,
+            });
+            setIsLoading(false);
+          });
       } catch (error) {}
     }
   };
@@ -100,7 +110,7 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
           type="button"
           onClick={() => setShowModal(true)}
         >
-          Add Blog
+          Add Galery
         </button>
         {showModal ? (
           <>
@@ -114,10 +124,10 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
                   <div className="mt-3 sm:flex">
                     <div className="mt-2 text-center sm:text-left w-full">
                       <h4 className="text-lg font-medium text-gray-800 mb-5">
-                        Create Blog
+                        Create Galery
                       </h4>
                       <hr className="mb-8" />
-                      <form onSubmit={handleCreate}>
+                      <form onSubmit={handleSubmit}>
                         <p className="mt-2 mb-5 text-[15px] leading-relaxed text-gray-500">
                           Title
                         </p>
@@ -157,15 +167,6 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
                           className="file-input file-input-bordered border-gray-400 file-input-md bg-white w-full hover:border-black"
                           onChange={handleImageChange}
                         />
-                        {/* Blog */}
-                        <p className="mt-2 mb-5 text-[15px] leading-relaxed text-gray-500">
-                          Blog
-                        </p>
-                        <CKEditor
-                          editor={ClassicEditor}
-                          data={body}
-                          onChange={handleEditorChange}
-                        />
                         {isLoading ? (
                           <button className="btn loading mt-3 w-full bg-gray-200 text-black">
                             loading
@@ -196,4 +197,4 @@ const AddBlog = ({ keyword, handleChangeKeyword, handleSubmitSearch }) => {
   );
 };
 
-export default AddBlog;
+export default AddGalery;
